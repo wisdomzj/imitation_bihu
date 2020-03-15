@@ -1,0 +1,31 @@
+<div id="header">
+    <div class="center">
+        <img src="{{__HOST__}}/default/bihu/img/logo.png" alt="" class="logo">
+        <a href="{{__HOST__}}/bihuwebsite" class="index">首页</a>
+        <form action="{{__HOST__}}/bihuwebsite/search" method="POST">
+            <input type="text" name="seacon" placeholder="搜索内容">
+            <i class="iconfont icon-sousuo1"></i>
+        </form>
+        {{if islogin == 'success'}}
+        <div class="avatars">
+            <div class="top">
+                <img src="{{__HOST__}}/{{headportait}}" alt="">
+            </div>
+            <div class="bot">
+                <a href="{{__HOST__}}/bihuwebsite/mycenter">个人主页</a>
+                <a href="{{__HOST__}}/bihuwebsite/login/exit">退出</a>
+            </div>
+        </div>
+        {{else}}
+        <div class="logreg">
+            <a href="{{__HOST__}}/bihuwebsite/login">登录</a>
+            <a href="{{__HOST__}}/bihuwebsite/register">注册</a>
+        </div>
+        {{/if}}
+
+        <a href="{{__HOST__}}/bihuwebsite/article/add" class="r">
+            <i class="iconfont icon-bianjibijishishouxie"></i>
+            写文章
+        </a>
+    </div>
+</div>

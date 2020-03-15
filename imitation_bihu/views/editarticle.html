@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>编辑文章</title>
+    <link rel="stylesheet" type="text/css" href="{{__HOST__}}/default/bihu/css/simditor.css" />
+    <script type="text/javascript" src="{{__HOST__}}/default/bihu/js/jquery.min.js"></script>
+    <script type="text/javascript" src="{{__HOST__}}/default/bihu/js/module.js"></script>
+    <script type="text/javascript" src="{{__HOST__}}/default/bihu/js/hotkeys.js"></script>
+    <script type="text/javascript" src="{{__HOST__}}/default/bihu/js/uploader.js"></script>
+    <script type="text/javascript" src="{{__HOST__}}/default/bihu/js/simditor.js"></script>
+    <script src="{{__HOST__}}/default/bihu/js/jquery.min.js"></script>
+    <script src="{{__HOST__}}/default/bihu/js/layer/layer.js"></script>
+    <link rel="stylesheet" href="{{__HOST__}}/default/bihu/css/iconfont.css">
+    <link rel="stylesheet" href="{{__HOST__}}/default/bihu/css/addarticle.css">
+</head>
+<body>
+    {{include './common/header.html' $islogin,$headportait}}
+    <div class="container">
+        <form action="{{__HOST__}}/bihuwebsite/article/editcheck" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="aid" value="{{@data._id}}">
+            <input type="text" class="title" placeholder="标题" name="title" value="{{data.title}}">
+            <textarea id="editor" placeholder="请输入文章内容" autofocus name="content">{{data.content}}</textarea>
+            <script>
+                var editor = new Simditor({
+                    textarea: $('#editor')
+                });
+            </script>
+            <br/>
+            <input type="file" value="请上传缩略图" name="img_url">
+            <br/>
+            <input type="submit" value="发表">
+        </form>
+    </div>
+    {{include './common/footer.html'}}
+</body>
+</html>

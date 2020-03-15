@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人中心</title>
+    <script type="text/javascript" src="{{__HOST__}}/default/bihu/js/jquery.min.js"></script>
+    <script src="{{__HOST__}}/default/bihu/js/layer/layer.js"></script>
+    <link rel="stylesheet" href="{{__HOST__}}/default/bihu/css/iconfont.css">
+    <link rel="stylesheet" href="{{__HOST__}}/default/bihu/css/mycenter.css">
+    <script>
+        function del(aid) {
+            layer.confirm('你确定要删除吗？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                layer.msg('删除', {
+                    icon: 1
+                });                
+                $.ajax({
+                    url:"/bihuwebsite/article/remove/"+aid,
+                    method:"get",
+                    success:(res)=>{
+                        location.href="/bihuwebsite/mycenter";
+                    } 
+                })
+            }, function () {
+                layer.msg('已取消', {
+                    icon: 1
+                });
+            });
+        }
+    </script>
+</head>
+
+<body>
+    {{include './common/header.html' $islogin,$headportait}}
+    <div class="container">
+        <div class="top">
+            <div class="user">
+                {{if user.headportait != ''}}
+                <img src="{{__HOST__}}/{{user.headportait}}" alt="">
+                {{else}}
+                <img src="{{__HOST__}}/default/bihu/img/touxiang.png" alt="">
+                {{/if}}
+                <p>{{user.uname}}</p>
+            </div>
+            <div class="tabtitle">
+                <p class='cur'>文章({{arts.length}})</p>
+                <p>收藏({{collarts.length}})</p>
+                <p>资料设置</p>
+            </div>
+        </div>
+        <div class="tab">
+            <div class="articles" style="display:block;">
+                {{if arts.length == 0}}
+                你还没发布过文章,快去发布一篇文章吧
+                {{else}}
+                <ul>
+                    {{each arts}}
+                    <li>
+                        <a href="{{__HOST__}}/bihuwebsite/article/details/{{$value.id}}" class="title">{{$value.title}}</a>
+                        <div class="r">
+                            <a href="{{__HOST__}}/bihuwebsite/article/edit/{{$value.id}}" class="btn edit">编辑</a>
+                            <a href="javascript:void(0)" class="btn del" onclick="del('{{$value.id}}')">删除</a>
+                        </div>
+                    </li>
+                    {{/each}}
+                </ul>
+                {{/if}}
+            </div>
+            <div class="collections">
+                {{if collarts.length == 0}}
+                <div class="blank">
+                        你还没收藏过文章,快去收藏一篇文章吧
+                </div>
+                
+                {{else}}
+                <ul>
+                    {{each collarts}}
+                    <li>
+                        <img src="{{__HOST__}}/{{$value.img_url}}">
+                        <h3><a href="{{__HOST__}}/bihuwebsite/article/details/{{$value.id}}" target="_blank">{{$value.title}}</a></h3>
+                        <p class="desc">{{$value.content}}</p>
+                        <p class="bot">
+                            <i class="iconfont icon-zan"></i>
+                            6666
+                        </p>
+                    </li>
+                    {{/each}}
+                </ul>
+                {{/if}}
+            </div>
+            <div class="userinfo" style="display:none;">
+                <form id="Form" action="{{__HOST__}}/bihuwebsite/mycenter/edituinfo" method="POST" enctype="multipart/form-data">
+                    <table>
+                        <tr>
+                            <td>用户名:</td>
+                            <td><input type="text" name="uname" readonly value="{{user.uname}}" class="inpsty"></td>
+                        </tr>
+                        <tr>
+                            <td>密码:</td>
+                            <td><input type="password" name="password" value="" id="password" class="inpsty"></td>
+                        </tr>
+                        <tr>
+                            <td>确认密码:</td>
+                            <td><input type="password" name="rpassword" value="" id="rpassword" class="inpsty"></td>
+                        </tr>
+                        <tr>
+                            <td>头像:</td>
+                            <td><input type="file" name="headportait"></td>
+                        </tr>
+                    </table>
+                    <input type="hidden" name="prevPage" value="{{G.prevPage}}" >
+                    <input type="submit" value="更新个人资料">
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="{{__HOST__}}/default/bihu/js/mycenter.js"></script>
+    {{include './common/footer.html'}}
+    <script>
+    
+    $(function(){
+        $("#Form").submit(function () {
+            if ($('#password').val() == '' || $("#rpassword").val() == '') {
+                alert('请填写需要修改的信息')
+                return false;
+            }
+            return true;
+        })
+    })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+{
+  "name": "cmsSys_admin_backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cross-env NODE_ENV=production node app",
+    "dev": "nodemon app"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "art-template": "^4.13.2",
+    "koa": "^2.11.0",
+    "koa-art-template": "^1.1.1",
+    "koa-bodyparser": "^4.2.1",
+    "koa-json-error": "^3.1.2",
+    "koa-multer": "^1.0.2",
+    "koa-router": "^8.0.6",
+    "koa-session": "^5.13.1",
+    "koa-static": "^5.0.0",
+    "mongoose": "^5.8.11",
+    "xss": "^1.0.6"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.0"
+  }
+}

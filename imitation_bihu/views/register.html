@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>注册</title>
+    <script src="{{__HOST__}}/js/jquery-1.11.3.min.js"></script>
+    <script src="{{__HOST__}}/js/layer/layer.js"></script>
+    <link rel="stylesheet" href="{{__HOST__}}/css/iconfont.css">
+    <link rel="stylesheet" href="{{__HOST__}}/css/reg.css">
+</head>
+
+<body>
+    {{include './common/header.html'}}
+    <div class="container">
+        <h1>注册</h1>
+        <form id="loginForm" class="l" method="post" action="{{__HOST__}}/register/check">
+            <input type="text" placeholder="请输入用户名" name="name" id="uname">
+            <input type="password" placeholder="请输入密码" name="password" id="password">
+            <input type="submit" value="注册">
+        </form>
+        <div class="r">
+            <p>请妥善保存您本站的账号及登录密码</p>
+            <p>请勿和其他网站使用相同的登录密码</p>
+            <br>
+            <p>已有账号？去 <a href="{{__HOST__}}/login">登录</a></p>
+        </div>
+    </div>
+    {{include './common/footer.html'}}
+    <script>
+        $(function(){
+            $("#loginForm").submit(function () {
+                if ($('#uname').val() == '' || $("#password").val() == '') {
+                    alert('用户名或者密码或者验证码不能为空')
+                    return false;
+                }
+                return true;
+            })
+        })
+    </script>
+</body>
+
+</html>

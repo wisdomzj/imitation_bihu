@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <script src="/js/jquery-1.11.3.min.js"></script>
+    <script src="/js/layer/layer.js"></script>
+    <link rel="stylesheet" href="/css/iconfont.css">
+    <link rel="stylesheet" href="/css/reg.css">
+</head>
+<body>
+    {{include './common/header.html'}}
+    <div class="container">
+        <h1>登录</h1>
+        <form id="loginForm" class="l" method="POST" action="/login/check">
+            <input type="text" placeholder="请输入账号" name="name" id="uname">
+            <input type="password" placeholder="请输入密码" name="password" id="password">
+            <input type="submit" value="登录">
+        </form>
+        <div class="r">
+            <p>还不是本站的用户？</p>
+            <p>马上注册，掌握一手资讯。</p>
+            <br>
+            <p><a href="/register">免费注册</a></p>
+        </div>
+    </div>
+    {{include './common/footer.html'}}
+    <script>
+        $(function(){
+            $("#loginForm").submit(function () {
+                if ($('#uname').val() == '' || $("#password").val() == '') {
+                    alert('用户名或者密码或者验证码不能为空')
+                    return false;
+                }
+                return true;
+            })
+        })
+    </script>
+</body>
+</html>
