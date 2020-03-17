@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <title>发表文章</title>
-    <link rel="stylesheet" type="text/css" href="{{__HOST__}}/default/bihu/css/simditor.css" />
-    <script type="text/javascript" src="{{__HOST__}}/default/bihu/js/jquery.min.js"></script>
-    <script type="text/javascript" src="{{__HOST__}}/default/bihu/js/module.js"></script>
-    <script type="text/javascript" src="{{__HOST__}}/default/bihu/js/hotkeys.js"></script>
-    <script type="text/javascript" src="{{__HOST__}}/default/bihu/js/uploader.js"></script>
-    <script type="text/javascript" src="{{__HOST__}}/default/bihu/js/simditor.js"></script>
-    <script src="{{__HOST__}}/default/bihu/js/jquery.min.js"></script>
-    <script src="{{__HOST__}}/default/bihu/js/layer/layer.js"></script>
-    <link rel="stylesheet" href="{{__HOST__}}/default/bihu/css/iconfont.css">
-    <link rel="stylesheet" href="{{__HOST__}}/default/bihu/css/addarticle.css">
+    <link rel="stylesheet" type="text/css" href="/css/simditor.css" />
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/js/module.js"></script>
+    <script type="text/javascript" src="/js/hotkeys.js"></script>
+    <script type="text/javascript" src="/js/uploader.js"></script>
+    <script type="text/javascript" src="/js/simditor.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/layer/layer.js"></script>
+    <link rel="stylesheet" href="/bihu/css/iconfont.css">
+    <link rel="stylesheet" href="/bihu/css/addarticle.css">
 </head>
 <body>
-    {{include './common/header.html' $islogin,$headportait}}
+    {{include './common/header.html' $islogin,$userData}}
     <div class="container">
-        <form action="{{__HOST__}}/bihuwebsite/article/addcheck" method="POST" enctype="multipart/form-data">
+        <form action="/article/addcheck" method="POST" enctype="multipart/form-data">
             <input type="text" class="title" placeholder="标题" name="title">
             <textarea id="editor" placeholder="请输入文章内容" autofocus name="content"></textarea>
             <script>

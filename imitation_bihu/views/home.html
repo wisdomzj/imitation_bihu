@@ -11,26 +11,23 @@
 </head>
 
 <body> 
-    {{include './common/header.html' $islogin,$headportait}}    
+    {{include './common/header.html' $islogin,$userData}}    
     <div class="container">
         <div class="leftmenu">
             <a>最新文章</a>
-            <a>最新文章</a>
-            <a>最新文章</a>
-            <!-- <a href="{{__HOST__}}/bihuwebsite"  {{if !G.url[1]}} class="cur"{{/if}}>最新文章</a>
-            <a href="{{__HOST__}}/bihuwebsite/hotarticle" {{if G.url[1] == "hotarticle"}}class="cur"{{/if}}>热门资讯</a>
-            <a href="{{__HOST__}}/bihuwebsite/bestarticle" {{if G.url[1] == "bestarticle"}}class="cur"{{/if}}>精品文章</a> -->
+            <a>最火文章</a>
+            <a>精文推荐</a>
         </div>
         <div class="r">
             <ul>
                 {{each Paginator.list}}
                 <li>
                     <div class="top">
-                        <img src="/{{$value.uid.headportait}}" alt="">
-                        <p>{{$value.uid.uname}}</p>
+                        <img src="{{$value.uid.avatar}}" alt="">
+                        <p>{{$value.uid.name}}</p>
                         <p>{{$value.at}}</p>
                     </div>
-                    <img src="/{{$value.img_url}}">
+                    <img src="{{$value.imgUrl}}">
                     <h3><a href="/article/details/{{$value.id}}">{{$value.title}}</a></h3>
                     <p class="desc">{{$value.content}}</p>
                     <p class="bot">
@@ -41,12 +38,13 @@
                 {{/each}}
             </ul>
             
-            <!-- <div class="pagelist">
+            <div class="pagelist">
                 {{each Paginator.pnatorarr}}
                     {{if $value == Paginator.currentPage}}
                     <span>{{$value}}</span>
                     {{else}}
-                    {{if !G.url[1]}}
+                    <a href="/home?curpage={{$value}}">{{$value}}</a>
+                    <!-- {{if !G.url[1]}}
                     <a href="{{__HOST__}}/bihuwebsite?curpage={{$value}}">{{$value}}</a>
                     {{/if}}
                     {{if G.url[1] == "hotarticle"}}
@@ -54,10 +52,10 @@
                     {{/if}}
                     {{if G.url[1] == "bestarticle"}}
                     <a href="{{__HOST__}}/bihuwebsite/bestarticle?curpage={{$value}}">{{$value}}</a>
-                    {{/if}}
+                    {{/if}} -->
                     {{/if}}
                 {{/each}}
-            </div> -->
+            </div>
         </div>
     </div>
     {{include './common/footer.html'}}

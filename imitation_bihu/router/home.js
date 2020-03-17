@@ -1,7 +1,5 @@
 const Router = require('koa-router')
-const router = new Router({
-    prefix: '/home'
-})
+const router = new Router({ prefix: '/home' })
 const articleModel = require("../model/articleModel")
 const userModel = require("../model/userModel")
 const tools = require("../utils/tools")
@@ -11,7 +9,7 @@ const xss = require("xss")
 router.get("/", async (ctx) => {
     const pageSize = 5
     const currentPage = ctx.query.curpage || 1
-    const list = await articleModel.find({}, {}, {
+    let list = await articleModel.find({}, {}, {
         skip: (currentPage - 1) * pageSize,
         limit: pageSize
     }).sort({
@@ -28,7 +26,7 @@ router.get("/", async (ctx) => {
 
     list = list.map((x) => {
         x.id = x._id.toString().slice(1, -1);
-        x.at = tools.formatDate(x.add_time, format = "YY年MM月DD日");
+        x.at = tools.formatDate(x.addTime, format = "YY年MM月DD日");
         x.content = xss(x.content, {
             whiteList: [], // 白名单为空，表示过滤所有标签
             stripIgnoreTag: true, // 过滤所有非白名单标签的HTML
@@ -48,7 +46,7 @@ router.get("/", async (ctx) => {
     const { uid, islogin } = ctx.session.userInfo
     const userData = await userModel.findById({ _id:uid })
 
-    ctx.render("/home", {
+    ctx.render("home", {
         islogin,
         userData,
         Paginator

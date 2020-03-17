@@ -1,7 +1,5 @@
 const Router = require('koa-router')
-const router = new Router({
-    prefix: '/article'
-})
+const router = new Router({ prefix: '/article' })
 const articleModel = require("../model/articleModel")
 const userModel = require("../model/userModel")
 const collectionModel = require("../model/collectionModel")
@@ -24,7 +22,7 @@ const upload = multer({
 // 添加文章
 router.get("/add", async (ctx, next) => {
     const { uid, islogin } = ctx.session.userInfo
-    const userRes = await userModel.findById({ _id: uid })
+    const userData = await userModel.findById({ _id: uid })
     if(!ctx.session.userInfo){
         ctx.render("/error",{
             res: "快去登陆啊，不然我不让你写文章",
@@ -33,9 +31,9 @@ router.get("/add", async (ctx, next) => {
             redirecturl: `${ctx.state.__HOST__}/login`
         })
     }else{
-        ctx.render("/addarticle",{
+        ctx.render("addarticle",{
             islogin,
-            avatar: userRes.avatar
+            userData
         })
     }
 })

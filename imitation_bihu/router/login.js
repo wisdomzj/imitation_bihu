@@ -3,21 +3,19 @@ const router = new Router({ prefix: '/login' })
 const userModel = require("../model/userModel")
 
 //登录
-router.get("/", async(ctx, next) => {
+router.get("/", async (ctx, next) => {
     await ctx.render("login")
 })
 
 //登录验证
-router.post("/check", async(ctx, next) => {
+router.post("/check", async (ctx, next) => {
     const { name, password } = ctx.request.body
     const userRes = await userModel.findOne({ name })
     if (!userRes) {
-        ctx.render("error", {
-            res: "用户不存在",
-            msg: "卧槽！查无此人",
-            prevpage: "前往登陆页",
-            redirectUrl: '/login'
-        })
+        ctx.body = {
+            msg: "用户不存在",
+            code: 5008,
+        }
     } else {
         if (userRes.password === password) {
             ctx.session.userInfo = {
@@ -25,22 +23,26 @@ router.post("/check", async(ctx, next) => {
                 uid: userRes._id,
                 name: userRes.name
             }
-            ctx.redirect('/home')
+            ctx.body = {
+                msg: "登录成功",
+                code: 5009,
+            }
         } else {
-            ctx.render("error", {
-                res: "密码错误!!!",
-                msg: "卧槽！密码怎么忘记了",
-                prevpage: "前往登陆页",
-                redirecturl: '/login'
-            })
+            ctx.body = {
+                msg: "密码错误",
+                code: 5008,
+            }
         }
     }
 })
 
 //退出登录
-router.get("/exit", async(ctx) => {
+router.get("/exit", async (ctx) => {
     ctx.session.userInfo = null
-    ctx.redirect('/login')
+    ctx.body = {
+        msg: "退出成功",
+        code: 5007,
+    }
 })
 
 module.exports = router
