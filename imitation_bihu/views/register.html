@@ -17,7 +17,7 @@
         <div class="l">
             <input type="text" placeholder="请输入用户名" id="name">
             <input type="password" placeholder="请输入密码" id="password">
-            <input type="submit" value="注册">
+            <input type="button" id="btn" value="注册">
         </div>
         <div class="r">
             <p>请妥善保存您本站的账号及登录密码</p>
@@ -48,7 +48,7 @@
                     },
                     dataType: "json",
                     success: function (res) {
-                        if(res.code === 5008){
+                        if(res.code === 5005){
                             layer.msg(res.msg, {
                                 offset: '100px',
                                 anim: 6

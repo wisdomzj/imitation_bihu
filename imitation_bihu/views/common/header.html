@@ -31,7 +31,7 @@
             </div>
             {{/if}}
     
-            <a id="addArt" class="r">
+            <a href="/article/add" id="addArt" class="r">
                 <i class="iconfont icon-bianjibijishishouxie"></i>
                 写文章
             </a>
@@ -41,46 +41,18 @@
         $(function(){
             $("#exit").click(function () {
                 $.ajax({
-                    url: "/login/check",
-                    type: "post",
-                    data: {
-                        name: name,
-                        password: password
-                    },
+                    url: "/login/exit",
+                    type: "get",
                     dataType: "json",
                     success: function (res) {
-                        if(res.code === 5008){
+                        if(res.code === 5007){
                             layer.msg(res.msg, {
-                                offset: '100px',
-                                anim: 6
+                                offset: 't',
+                                anim: 0
                             })
-                        }else{
-                            location.href = "/home"
-                        }
-                    },
-                    error: function (err) {
-                        console.log('错误信息:' + err)
-                    }
-                })
-            })
-
-            $("#addArt").click(function () {
-                $.ajax({
-                    url: "/login/check",
-                    type: "post",
-                    data: {
-                        name: name,
-                        password: password
-                    },
-                    dataType: "json",
-                    success: function (res) {
-                        if(res.code === 5008){
-                            layer.msg(res.msg, {
-                                offset: '100px',
-                                anim: 6
-                            })
-                        }else{
-                            location.href = "/home"
+                            setTimeout(()=>{
+                                location.href = "/login"
+                            },1000)
                         }
                     },
                     error: function (err) {

@@ -390,7 +390,7 @@ li {
   font-size: 14px;
   color: #333;
 }
-.container .tab .userinfo input[type=submit] {
+.container .tab .userinfo input[type=button] {
   background: #007BFF;
   color: white;
   display: block;

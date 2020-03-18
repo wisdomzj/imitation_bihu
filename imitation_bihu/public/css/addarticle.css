@@ -52,6 +52,9 @@
 #header .center form input::-ms-input-placeholder {
   color: #BCC7D7;
 }
+#header .center form input:focus {
+  outline: none;
+}
 #header .center form i {
   margin-right: 10px;
   color: #999;
@@ -215,7 +218,7 @@ li {
 .container .simditor .simditor-wrapper .simditor-placeholder {
   color: #BCC7D7;
 }
-.container input[type=submit] {
+.container input[type=button] {
   background: #007BFF;
   color: white;
   width: 168px;

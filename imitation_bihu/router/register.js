@@ -10,6 +10,7 @@ router.get("/", async (ctx) => {
 //注册验证
 router.post("/check", async (ctx) => {
     const { name, password } = ctx.request.body
+    const avatar = "http://localhost:3000/default/touxiang.png"
     const exist = await userModel.find({ name })
     if (exist.length > 0) {
         ctx.body = {
@@ -20,9 +21,9 @@ router.post("/check", async (ctx) => {
         const userEnity = new userModel({
             name,
             password,
-            avatar: `${ctx.origin}/public/default/touxiang.png`,
-            loginTime: new Data(),
-            addTime: new Data()
+            avatar,
+            loginTime: new Date(),
+            addTime: new Date()
         })
         await userEnity.save((err, data) => {
             if (err) return

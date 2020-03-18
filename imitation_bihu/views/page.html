@@ -4,34 +4,68 @@
 <head>
     <meta charset="UTF-8">
     <title>详情页</title>
-    <script src="{{__HOST__}}/default/bihu/js/jquery-1.11.3.min.js"></script>
-    <script src="{{__HOST__}}/default/bihu//js/layer/layer.js"></script>
-    <link rel="stylesheet" href="{{__HOST__}}/default/bihu/css/iconfont.css">
-    <link rel="stylesheet" href="{{__HOST__}}/default/bihu/css/page.css">
-    <script src="{{__HOST__}}/default/bihu/js/page.js"></script>
+    <script src="/js/jquery-1.11.3.min.js"></script>
+    <script src="/js/layer/layer.js"></script>
+    <link rel="stylesheet" href="/css/iconfont.css">
+    <link rel="stylesheet" href="/css/page.css">
+    <script src="/js/page.js"></script>
 </head>
 
 <body>
-    {{include './common/header.html' $islogin,$headportait}}
+    {{include './common/header.html' $islogin,$userData}}
     <div class="container">
-        <h1>{{data.title}}</h1>
+        <h1>{{artRes.title}}</h1>
         <div class="user">
-            <img src="{{__HOST__}}/{{data.uid.headportait}}" alt="">
-            <p>{{data.uid.uname}}</p>
-            <p>{{data.at}}</p>
+            <img src="{{artRes.uid.avatar}}">
+            <p>{{artRes.uid.name}}</p>
+            <p>{{artRes.at}}</p>
         </div>
         <div class="content">
-            {{@data.content}}
+            {{@artRes.content}}
         </div>
         <div class="star {{iscollection}}">
             <i class="iconfont icon-star"></i>
             <p><span>已 </span>收 藏</p>
         </div>
-        <script>
-            var aid = "{{aid}}";
-        </script>
     </div>
     {{include './common/footer.html'}}
+    <script>
+        var aid = "{{aid}}"
+        $(function(){
+            $(".container .star").click(function () {
+                var _this = $(this)
+                $.ajax({
+                    url:"/article/collection",
+                    type:"post",
+                    data:{
+                        aid
+                    },
+                    dataType:"json",
+                    success:function(data){
+                        var jqthis = $(this)
+                        if(data.stu === 1){
+                            layer.msg(data.msg, {
+                                offset: '75px',
+                                anim: 0
+                            })
+                        }else if(data.stu === 2){
+                            layer.msg(data.msg, {
+                                offset: '75px',
+                                anim: 0
+                            })                 
+                            _this.addClass("cur")
+                        }else{
+                            layer.msg(data.msg, {
+                                offset: '75px',
+                                anim: 0
+                            })
+                            _this.removeClass("cur")
+                        }  
+                    }
+                })
+            })
+        })
+    </script>
 </body>
 
 </html>

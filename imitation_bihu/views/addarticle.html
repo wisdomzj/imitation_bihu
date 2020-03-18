@@ -11,26 +11,60 @@
     <script type="text/javascript" src="/js/simditor.js"></script>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/layer/layer.js"></script>
-    <link rel="stylesheet" href="/bihu/css/iconfont.css">
-    <link rel="stylesheet" href="/bihu/css/addarticle.css">
+    <link rel="stylesheet" href="/css/iconfont.css">
+    <link rel="stylesheet" href="/css/addarticle.css">
 </head>
 <body>
     {{include './common/header.html' $islogin,$userData}}
     <div class="container">
-        <form action="/article/addcheck" method="POST" enctype="multipart/form-data">
-            <input type="text" class="title" placeholder="标题" name="title">
-            <textarea id="editor" placeholder="请输入文章内容" autofocus name="content"></textarea>
+        <div>
+            <input type="text" class="title" placeholder="标题" id="title">
+            <textarea id="editor" placeholder="请输入文章内容" autofocus ></textarea>
             <script>
                 var editor = new Simditor({
                     textarea: $('#editor')
                 });
             </script>
-            <br/>
-            <input type="file" value="请上传缩略图" name="img_url">
-            <br/>
-            <input type="submit" value="发表">
-        </form>
+            <input type="button" id="btn" value="发表">
+        </div>
     </div>
     {{include './common/footer.html'}}
+    <script>
+        $(function () {
+            $("#btn").click(function () {
+                var title = $("#title").val()
+                var content = $("#editor").val()
+                if (!title || !content) {
+                    layer.msg('标题或内容不能为空', {
+                        offset: '100px',
+                        anim: 6
+                    })
+                    return
+                }
+                $.ajax({
+                    url: "/article/addcheck",
+                    type: "post",
+                    data: {
+                        title,
+                        content
+                    },
+                    dataType: "json",
+                    success: function (res) {
+                        if(res.data.msg === "success"){
+                            location.href = "/home"
+                        }else{
+                            layer.msg("添加失败", {
+                                offset: '100px',
+                                anim: 6
+                            })
+                        }
+                    },
+                    error: function (err) {
+                        console.log('错误信息:' + err)
+                    }
+                })
+            })
+        })
+    </script>
 </body>
 </html>
