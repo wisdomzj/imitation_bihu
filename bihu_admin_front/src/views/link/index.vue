@@ -41,7 +41,7 @@
           <el-input v-model="addfocusInfo.linkName" placeholder="请输入标题" clearable />
         </el-form-item>
         <el-form-item label="链接地址">
-          <el-input v-model="addfocusInfo.linkurl" placeholder="请输入链接地址" clearable />
+          <el-input v-model="addfocusInfo.url" placeholder="请输入链接地址" clearable />
         </el-form-item>
         <el-form-item label="发布时间">
           <el-date-picker

@@ -40,18 +40,6 @@
   background: #F3F3F3;
   font-size: 13px;
 }
-#header .center form input::-webkit-input-placeholder {
-  color: #BCC7D7;
-}
-#header .center form input::-moz-placeholder {
-  color: #BCC7D7;
-}
-#header .center form input::-moz-placeholder {
-  color: #BCC7D7;
-}
-#header .center form input::-ms-input-placeholder {
-  color: #BCC7D7;
-}
 #header .center form input:focus {
   outline: none;
 }
@@ -185,14 +173,14 @@ li {
   color: #BCC7D7;
 }
 .container {
-  width: 1000px;
+  width: 1175px;
   margin: 0 auto;
   margin-top: 30px;
-  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
 }
 .container .leftmenu {
-  width: 120px;
-  float: left;
+  width: 100px;
 }
 .container .leftmenu a {
   font-size: 14px;
@@ -214,9 +202,7 @@ li {
   color: white;
 }
 .container .r {
-  overflow: hidden;
-  width: 850px;
-  float: right;
+  width: 750px;
 }
 .container .r > ul {
   background: white;
@@ -306,4 +292,8 @@ li {
 .container .r .pagelist span {
   background: #007BFF;
   color: white;
+}
+.container .rbox {
+  width: 275px;
+  height: 150px;
 }

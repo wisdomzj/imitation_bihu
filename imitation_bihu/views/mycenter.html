@@ -35,7 +35,7 @@
 </head>
 
 <body>
-    {{include './common/header.html' $islogin,$userData}}
+    {{include './common/header.html' $islogin,$userData,$setInfo}}
     <div class="container">
         <div class="top">
             <div class="user">
@@ -106,7 +106,7 @@
         </div>
     </div>
     <script src="/js/mycenter.js"></script>
-    {{include './common/footer.html'}}
+    {{include './common/footer.html' $setInfo}}
     <script>
     
     $(function () {

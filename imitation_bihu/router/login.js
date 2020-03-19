@@ -1,10 +1,14 @@
 const Router = require('koa-router')
 const router = new Router({ prefix: '/login' })
 const userModel = require("../model/userModel")
+const settingModel = require("../model/settingModel")
 
 //登录
 router.get("/", async (ctx, next) => {
-    await ctx.render("login")
+    const setInfo = await settingModel.find({})
+    await ctx.render("login",{
+        setInfo
+    })
 })
 
 //登录验证

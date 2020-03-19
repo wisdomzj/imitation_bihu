@@ -1,0 +1,64 @@
+.scon {
+  margin-bottom: 20px;
+  padding: 10px;
+  background: #ffffff;
+}
+.scon .psty {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.scon .psty img {
+  margin-right: 5px;
+}
+.scon .links li {
+  padding: 10px;
+}
+.scon .links li .asty {
+  color: #909399;
+}
+.scon .links li .asty:hover {
+  text-decoration: underline;
+}
+/*轮播开始*/
+.shuffing {
+  width: 100%;
+  height: 150px;
+  position: relative;
+}
+.shuffing .img {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.shuffing .page {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.shuffing .page ul {
+  height: 30px;
+  width: 120px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.shuffing .page ul li {
+  height: 6px;
+  width: 6px;
+  border-radius: 50%;
+  background-color: #DDDDDD;
+  cursor: pointer;
+}
+.shuffing .page ul li.bgchange {
+  background: #088BBF;
+}

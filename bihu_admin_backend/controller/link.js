@@ -45,10 +45,9 @@ class Link{
     }
 
     async edit(ctx,next){ 
-        const { _id, review, linkurl, ...data } = ctx.request.body
-        const url = linkurl.indexOf('http://')>-1 ? linkurl  : `http://${linkurl}` 
+        const { _id, review, linkurl, ...data } = ctx.request.body 
         const status = review === '审核' ? 1 : 0  
-        const result = await linkModel.updateOne({ _id }, {...data, url, status})
+        const result = await linkModel.updateOne({ _id }, {...data, url:linkurl, status})
         
         ctx.body = {
             result,
@@ -67,10 +66,9 @@ class Link{
     }
 
     async add(ctx,next){
-        const { review,  linkurl, ...data } = ctx.request.body
-        const url = linkurl.indexOf('http://')>-1 ? linkurl  : `http://${linkurl}`
+        const { review, linkurl, ...data } = ctx.request.body
         const status = review === '审核' ? 1 : 0  
-        const linkEntity = new linkModel({ ...data, url, status })
+        const linkEntity = new linkModel({ ...data, url:linkurl, status })
         const result = await linkEntity.save()
         
         ctx.body = {

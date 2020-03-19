@@ -65,10 +65,15 @@ class Article {
 
     async remove(ctx,next){
         const { _id, imgUrl } = ctx.request.body
-        const pciUrl = imgUrl.substr(ctx.origin.length, imgUrl.length)
-        const oripath = path.join(__dirname,'../')
-        const filepath = `${oripath}public${pciUrl}`
-        const delfileRes = await tools.removeFile(filepath)
+        let delfileRes = {
+            msg: 'success'
+        }
+        if(!imgUrl.includes('/default')){
+            const pciUrl = imgUrl.substr(ctx.origin.length, imgUrl.length)
+            const oripath = path.join(__dirname,'../')
+            const filepath = `${oripath}public${pciUrl}`
+            delfileRes = await tools.removeFile(filepath)
+        }
         const result = await articleModel.remove({ _id })
         
         ctx.body = {

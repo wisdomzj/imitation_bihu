@@ -48,7 +48,6 @@ class Focus{
 
     async edit(ctx,next){     
         const { _id, review, focurl, focusImg, ...data } = ctx.request.body
-        const url = focurl.indexOf('http://')>-1 ? focurl  : `http://${focurl}`
         const status = review === '审核' ? 1 : 0
         if(data.pic){
             const pciUrl = focusImg.substr(ctx.origin.length, focusImg.length)
@@ -60,7 +59,7 @@ class Focus{
         } 
         const result = await focusModel.updateOne({ _id }, { 
             ...data,
-            url,
+            url: focurl,
             status
         })
         
@@ -89,9 +88,8 @@ class Focus{
 
     async add(ctx,next){
         const { review, focurl, ...data } = ctx.request.body
-        const url = focurl.indexOf('http://')>-1 ? focurl  : `http://${focurl}`
         const status = review === '审核' ? 1 : 0      
-        const focusEntity = new focusModel({ ...data, url, status })
+        const focusEntity = new focusModel({ ...data, url:focurl, status })
         const result = await focusEntity.save()
         
         ctx.body = {

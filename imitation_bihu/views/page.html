@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    {{include './common/header.html' $islogin,$userData}}
+    {{include './common/header.html' $islogin,$userData,$setInfo}}
     <div class="container">
         <h1>{{artRes.title}}</h1>
         <div class="user">
@@ -28,7 +28,7 @@
             <p><span>已 </span>收 藏</p>
         </div>
     </div>
-    {{include './common/footer.html'}}
+    {{include './common/footer.html' $setInfo}}
     <script>
         var aid = "{{aid}}"
         $(function(){

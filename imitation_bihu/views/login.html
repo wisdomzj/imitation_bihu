@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    {{include './common/header.html'}}
+    {{include './common/header.html' $setInfo}}
     <div class="container">
         <h1>登录</h1>
         <div class="l">
@@ -26,7 +26,7 @@
             <p><a href="/register">免费注册</a></p>
         </div>
     </div>
-    {{include './common/footer.html'}}
+    {{include './common/footer.html' $setInfo}}
     <script>
         $(function () {
             $("#btn").click(function () {
@@ -48,12 +48,12 @@
                     },
                     dataType: "json",
                     success: function (res) {
-                        if(res.code === 5008){
+                        if (res.code === 5008) {
                             layer.msg(res.msg, {
                                 offset: '100px',
                                 anim: 6
                             })
-                        }else{
+                        } else {
                             location.href = "/home"
                         }
                     },

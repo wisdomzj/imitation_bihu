@@ -3,22 +3,20 @@ const router = new Router({ prefix: '/article' })
 const articleModel = require("../model/articleModel")
 const userModel = require("../model/userModel")
 const collectionModel = require("../model/collectionModel")
+const settingModel = require("../model/settingModel")
 const tools = require("../utils/tools")
 
 // 添加文章
 router.get("/add", async (ctx, next) => {
-    const { uid, islogin } = ctx.session.userInfo
-    const userData = await userModel.findById({ _id: uid })
     if(!ctx.session.userInfo){
-        ctx.render("error",{
-            res: "快去登陆啊，不然我不让你写文章",
-            msg: "别捣乱啊！",
-            prevpage: "前往登陆页",
-            redirecturl: "/login"
-        })
+        ctx.redirect("/login")
     }else{
+        const { uid, islogin } = ctx.session.userInfo
+        const userData = await userModel.findById({ _id: uid })
+        const setInfo = await settingModel.find({})
         ctx.render("addarticle",{
             islogin,
+            setInfo,
             userData
         })
     }
@@ -75,20 +73,17 @@ router.get("/remove/:id", async (ctx, next) => {
 
 //编辑文章
 router.get("/edit/:id",async (ctx, next) => {
-    const art_id = ctx.params.id
-    const { uid, islogin } = ctx.session.userInfo
-    const artRes = await articleModel.findById({ _id: art_id })
-    const userData = await userModel.findById({ _id:uid })
     if(!ctx.session.userInfo){
-        ctx.render("/error",{
-            res: "编辑好像出了点问题",
-            msg: "编辑文章失败！",
-            prevpage: "前往上一页",
-            redirecturl: `/article/edit/${art_id}`
-        })
+        ctx.redirect("/login")
     }else{
+        const art_id = ctx.params.id
+        const { uid, islogin } = ctx.session.userInfo
+        const artRes = await articleModel.findById({ _id: art_id })
+        const userData = await userModel.findById({ _id:uid })
+        const setInfo = await settingModel.find({})
         ctx.render("editarticle",{
             islogin,
+            setInfo,
             userData,
             artRes
         })
@@ -108,22 +103,28 @@ router.post("/editcheck", async (ctx, next) => {
 
 // 文章详情
 router.get("/details/:id", async (ctx, next) => {
-    const aid = ctx.params.id 
-    const { uid, islogin } = ctx.session.userInfo
-    const userData = await userModel.findById({ _id: uid })
-    const artRes = await articleModel.findOne({
-        _id: aid
-    }).populate('uid')
-    artRes.at = tools.formatDate(artRes.addTime, format = "YY年MM月DD日")
-    const iscollection = await collectionModel.findOne({ uid, aid })
-    
-    ctx.render("page", {
-        islogin,
-        userData,
-        artRes,
-        aid,
-        iscollection: iscollection ? 'cur' : ''
-    })
+    if(!ctx.session.userInfo){
+        ctx.redirect("/login")
+    }else{
+        const aid = ctx.params.id 
+        const { uid, islogin } = ctx.session.userInfo
+        const userData = await userModel.findById({ _id: uid })
+        const artRes = await articleModel.findOne({
+            _id: aid
+        }).populate('uid')
+        artRes.at = tools.formatDate(artRes.addTime, format = "YY年MM月DD日")
+        const iscollection = await collectionModel.findOne({ uid, aid })
+        const setInfo = await settingModel.find({})
+        
+        ctx.render("page", {
+            islogin,
+            setInfo,
+            userData,
+            artRes,
+            aid,
+            iscollection: iscollection ? 'cur' : ''
+        })
+    }
 })
 
 // 收藏文章

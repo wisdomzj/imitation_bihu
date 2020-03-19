@@ -1,21 +1,3 @@
-* {
-  padding: 0;
-  margin: 0;
-  font-size: 16px;
-  font-family: 微软雅黑;
-}
-body {
-  background: #F6F8F9;
-}
-a {
-  text-decoration: none;
-}
-li {
-  list-style: none;
-}
-.tran {
-  transition: all 0.2s;
-}
 #header {
   width: 100%;
   height: 60px;
@@ -58,17 +40,8 @@ li {
   background: #F3F3F3;
   font-size: 13px;
 }
-#header .center form input::-webkit-input-placeholder {
-  color: #BCC7D7;
-}
-#header .center form input::-moz-placeholder {
-  color: #BCC7D7;
-}
-#header .center form input::-moz-placeholder {
-  color: #BCC7D7;
-}
-#header .center form input::-ms-input-placeholder {
-  color: #BCC7D7;
+#header .center form input:focus {
+  outline: none;
 }
 #header .center form i {
   margin-right: 10px;
@@ -87,12 +60,10 @@ li {
   color: #007BFF;
   justify-content: center;
   align-items: center;
-  transition: all 0.2s;
 }
 #header .center .r i {
   color: #007BFF;
   font-size: 20px;
-  transition: all 0.2s;
 }
 #header .center .r:hover {
   background: #007BFF;
@@ -142,6 +113,7 @@ li {
   position: absolute;
   top: 60px;
   left: -15px;
+  z-index: 100;
   box-shadow: 1px 6px 12px rgba(0, 0, 0, 0.175);
   border-radius: 6px;
   overflow: hidden;
@@ -157,16 +129,4 @@ li {
 }
 #header .center .avatars .bot a:hover {
   color: #007BFF;
-}
-.ph::-webkit-input-placeholder {
-  color: #BCC7D7;
-}
-.ph::-moz-placeholder {
-  color: #BCC7D7;
-}
-.ph::-moz-placeholder {
-  color: #BCC7D7;
-}
-.ph::-ms-input-placeholder {
-  color: #BCC7D7;
 }

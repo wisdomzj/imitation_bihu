@@ -3,20 +3,22 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>仿币乎</title>
+    <title>{{setInfo[0].websiteName}}</title>
     <script src="/js/jquery-1.11.3.min.js"></script>
     <script src="/js/layer/layer.js"></script>
+    <script src="/js/shuffing.js"></script>
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/iconfont.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body> 
-    {{include './common/header.html' $islogin,$userData}}    
+    {{include './common/header.html' $islogin,$userData,$setInfo}}    
     <div class="container">
         <div class="leftmenu">
-            <a>最新文章</a>
-            <a>最火文章</a>
-            <a>精文推荐</a>
+            <a href="/home?type=news" {{if type === "news"}} class="cur"{{/if}}>最新文章</a>
+            <a href="/home?type=hots" {{if type === "hots"}} class="cur"{{/if}}>最火文章</a>
+            <a href="/home?type=bests" {{if type === "bests"}} class="cur"{{/if}}>精文推荐</a>
         </div>
         <div class="r">
             <ul>
@@ -48,7 +50,27 @@
                 {{/each}}
             </div>
         </div>
+        <div class="rbox">
+            <div class="scon">
+                <p class="psty"><img src="/img/quan.png"><span>发现有趣的东西</span></p>
+                <div class="shuffing">
+                    {{each focus}}
+                    <a class="foc" href="{{$value.url}}" target="_blank">
+                        <img src="{{$value.pic}}" class="img"/>
+                    </a>
+                    {{/each}}
+                </div>
+            </div>
+            <div class="scon">
+                <p class="psty"><img src="/img/quan.png"><span>友情链接</span></p>
+                <ul class="links">
+                    {{each links}}
+                    <li><a class="asty" href="{{$value.url}}" target="_blank">{{$value.linkName}}</a></li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
     </div>
-    {{include './common/footer.html'}}
+    {{include './common/footer.html' $setInfo}}
 </body>
 </html>

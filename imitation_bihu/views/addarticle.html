@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="/css/addarticle.css">
 </head>
 <body>
-    {{include './common/header.html' $islogin,$userData}}
+    {{include './common/header.html' $islogin,$userData,$setInfo}}
     <div class="container">
         <div>
             <input type="text" class="title" placeholder="标题" id="title">
@@ -28,7 +28,7 @@
             <input type="button" id="btn" value="发表">
         </div>
     </div>
-    {{include './common/footer.html'}}
+    {{include './common/footer.html' $setInfo}}
     <script>
         $(function () {
             $("#btn").click(function () {

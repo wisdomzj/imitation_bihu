@@ -14,7 +14,7 @@ class Admin{
         ctx.body = {
             data:{
                 token,
-                msg:"success",
+                msg:"success"
             },
             code: 20000
         }

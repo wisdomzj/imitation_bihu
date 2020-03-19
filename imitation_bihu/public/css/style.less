@@ -1,0 +1,70 @@
+
+.scon{
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #ffffff;
+    .psty{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 10px;
+        img{
+            margin-right: 5px;
+        }
+    }
+    .links{
+        li{
+            padding: 10px;
+            .asty{
+                color: #909399;
+                &:hover{
+                    text-decoration:underline
+                }
+            }
+        }
+    }
+}
+
+/*轮播开始*/
+.shuffing{
+    width: 100%;
+    height: 150px;
+    position: relative;
+    //图片区域
+    .img{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    //分页器
+    .page{
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        background:#fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        ul{
+            height:30px;
+            width:120px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            li{
+                height:6px;
+                width:6px;
+                border-radius:50%;
+                background-color:#DDDDDD;
+                cursor: pointer;
+                &.bgchange{
+                    background: #088BBF;
+                }
+            }
+        }
+    }
+}

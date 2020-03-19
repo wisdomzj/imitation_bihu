@@ -5,13 +5,13 @@
 
 // 主体
 .container {
-    width: 1000px;
+    width: 1175px;
     margin: 0 auto;
     margin-top: 30px; // border: 1px solid blue;
-    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
     .leftmenu {
-        width: 120px;
-        float: left;
+        width: 100px;
         a {
             font-size: 14px;
             display: block;
@@ -33,9 +33,7 @@
         }
     } // leftmenu end
     .r {
-        overflow: hidden;
-        width: 850px;
-        float: right;
+        width: 750px;
         >ul {
             background: white;
             li {
@@ -81,7 +79,6 @@
                         white-space: nowrap;
                         text-overflow: ellipsis;
                         overflow: hidden;
-                         
                     }
                     height: 26px;
                     margin-bottom: 10px;
@@ -127,6 +124,11 @@
             }
         }
     } // .r end
+
+    .rbox{
+        width: 275px;
+        height: 150px;
+    }
 }
 
 // 主体结束

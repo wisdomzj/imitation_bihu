@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="/css/addarticle.css">
 </head>
 <body>
-    {{include './common/header.html' $islogin,$userData}}
+    {{include './common/header.html' $islogin,$userData,$setInfo}}
     <div class="container">
         <div>
             <input type="hidden" value="{{@artRes._id}}">
@@ -30,7 +30,7 @@
             <input type="button" id="btn" value="编辑">
         </div>
     </div>
-    {{include './common/footer.html'}}
+    {{include './common/footer.html' $setInfo}}
     <script>
         var aid = "{{@artRes._id}}"
         $(function () {
@@ -55,6 +55,7 @@
                     },
                     dataType: "json",
                     success: function (res) {
+                        console.log(res)
                         if(res.data.result.nModified > 0){
                             location.href = "/mycenter"
                         }else if(res.data.result.nModified === 0){
