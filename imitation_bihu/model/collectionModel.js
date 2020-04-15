@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 let collectionSchema = mongoose.Schema({
     uid:{type:String},
@@ -7,6 +7,6 @@ let collectionSchema = mongoose.Schema({
     coll_time:{type:Date}
 })
 
-let collectionModel = mongoose.model("collections",collectionSchema,"collection");
+let collectionModel = mongoose.model("collections",collectionSchema,"collection")
 
-module.exports = collectionModel;
+module.exports = collectionModel

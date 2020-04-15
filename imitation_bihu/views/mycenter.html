@@ -1,29 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>个人中心</title>
     <script type="text/javascript" src="/js/jquery.min.js"></script>
-    <script src="/js/layer/layer.js"></script>
+    <script src="/layui/layui.all.js"></script>
+    <link rel="stylesheet" href="/layui/css/layui.css">
     <link rel="stylesheet" href="/css/iconfont.css">
     <link rel="stylesheet" href="/css/mycenter.css">
     <script>
         function del(aid) {
             layer.confirm('你确定要删除吗？', {
                 btn: ['确定', '取消'] //按钮
-            }, function () {              
+            }, function () {
                 $.ajax({
-                    url:"/article/remove/"+aid,
-                    method:"get",
-                    success: function(result){
-                        if(result.data.res.deletedCount > 0){
+                    url: "/article/remove/" + aid,
+                    method: "get",
+                    success: function (result) {
+                        if (result.data.res.deletedCount > 0) {
                             location.reload()
-                        }else{
+                        } else {
                             layer.msg(result.data.msg, {
                                 icon: 2
                             })
                         }
-                    } 
+                    }
                 })
             }, function () {
                 layer.msg('已取消', {
@@ -56,7 +58,10 @@
                 <ul>
                     {{each arts}}
                     <li>
-                        <a href="/article/details/{{$value.id}}" class="title">{{$value.title}}</a>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <a href="/article/details/{{$value.id}}" class="title">{{$value.title}}</a>
+                            <p style="color: #ccc; font-size: 14px; margin-left: 20px;">{{$value.at}}</p>
+                        </div>
                         <div class="r">
                             <a href="/article/edit/{{$value.id}}" class="btn edit">编辑</a>
                             <a href="javascript:void(0)" class="btn del" onclick="del('{{$value.id}}')">删除</a>
@@ -69,9 +74,9 @@
             <div class="collections">
                 {{if collarts.length == 0}}
                 <div class="blank">
-                        你还没收藏过文章,快去收藏一篇文章吧
+                    你还没收藏过文章,快去收藏一篇文章吧
                 </div>
-                
+
                 {{else}}
                 <ul>
                     {{each collarts}}
@@ -79,10 +84,6 @@
                         <img src="{{$value.imgUrl}}">
                         <h3><a href="/article/details/{{$value.id}}">{{$value.title}}</a></h3>
                         <p class="desc">{{$value.content}}</p>
-                        <p class="bot">
-                            <i class="iconfont icon-zan"></i>
-                            6666
-                        </p>
                     </li>
                     {{/each}}
                 </ul>
@@ -99,6 +100,10 @@
                             <td>密码:</td>
                             <td><input type="password" id="password" class="inpsty"></td>
                         </tr>
+                        <tr>
+                            <td>更改头像:</td>
+                            <td><input type="file" id="upload"></td>
+                        </tr>
                     </table>
                     <input type="button" id="btn" value="更新个人资料">
                 </div>
@@ -108,38 +113,57 @@
     <script src="/js/mycenter.js"></script>
     {{include './common/footer.html' $setInfo}}
     <script>
-    
-    $(function () {
+        $(function () {
+            var avaimg = null
+            $("#upload").change(function (e) {
+                var fd = new FormData()
+                fd.append("file", e.target.files[0])
+                $.ajax({
+                    url: '/article/upload',
+                    type: "post",
+                    processData: false,
+                    contentType: false,
+                    data: fd,
+                    success: function (res) {
+                        if (res.data.msg === "success") {
+                            avaimg = res.data.file.imgUrl
+                        }
+                    }
+                })
+            })
             $("#btn").click(function () {
-                var password = $("#password").val()
-                if (!password) {
-                    layer.msg('密码不能为空', {
+                var pwd = $("#password").val()
+                if (!pwd && !avaimg) {
+                    layer.msg('密码 | 头像不能为空', {
                         offset: '100px',
                         anim: 6
                     })
                     return
                 }
-                $.ajax({
-                    url: "/mycenter/edit",
-                    type: "post",
-                    data: {
-                        password
-                    },
-                    dataType: "json",
-                    success: function (res) {
-                        if(res.data.result.nModified > 0){
-                            location.href = "/login"
-                        }else{
-                            layer.msg('编辑信息失败', {
-                                offset: '100px',
-                                anim: 6
-                            })
+                if (pwd || avaimg) {
+                    $.ajax({
+                        url: "/mycenter/edit",
+                        type: "post",
+                        data: {
+                            avaimg,
+                            pwd
+                        },
+                        dataType: "json",
+                        success: function (res) {
+                            if (res.data.result.nModified > 0) {
+                                location.href = "/login"
+                            } else {
+                                layer.msg('编辑信息失败', {
+                                    offset: '100px',
+                                    anim: 6
+                                })
+                            }
+                        },
+                        error: function (err) {
+                            console.log('错误信息:' + err)
                         }
-                    },
-                    error: function (err) {
-                        console.log('错误信息:' + err)
-                    }
-                })
+                    })
+                }
             })
         })
     </script>

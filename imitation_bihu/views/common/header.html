@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <div id="header">
         <div class="center">
             <img src="{{setInfo[0].logo}}" class="logo">
-            <a href="/home" class="index">首页</a>
-            <form action="/search" method="POST">
-                <input type="text" name="seacon" placeholder="搜索内容">
-                <i class="iconfont icon-sousuo1"></i>
+            <a href="/home" class="index" style="margin-left: 20px;">首页</a>
+            <form id="form" action="/article/search" method="GET">
+                <input type="text" name="keyword" placeholder="搜索内容">
+                <button id="searchbtn" style="padding: 0;margin: 0;padding: 0;border: none;outline: none;background: none;margin-right: 10px;cursor: pointer;
+                margin-top: 3px;">
+                    <img src="/img/search.png" style="width: 17px;height: 18px;">
+                </button>
             </form>
             {{if islogin === 'success'}}
             <div class="avatars">
@@ -21,11 +26,11 @@
                 </div>
                 <div class="bot" style="z-index: 100;">
                     <a href="/mycenter">个人主页</a>
-                    <a id="exit">退出</a>
+                    <a id="exit" style="cursor: pointer;">退出</a>
                 </div>
             </div>
             {{else}}
-            <div class="logreg">
+            <div class="logreg" style="margin: 0;">
                 <a href="/login">登录</a>
                 <a href="/register">注册</a>
             </div>
@@ -37,29 +42,36 @@
         </div>
     </div>
     <script>
-        $(function(){
+        $(function () {
+
+            $("#searchbtn").click(function () {
+                document.getElementById("form").submit()
+            })
             $("#exit").click(function () {
-                $.ajax({
-                    url: "/login/exit",
-                    type: "get",
-                    dataType: "json",
-                    success: function (res) {
-                        if(res.code === 5007){
-                            layer.msg(res.msg, {
-                                offset: 't',
-                                anim: 0
-                            })
-                            setTimeout(()=>{
+                layer.confirm('你确定要退出吗？', {
+                    btn: ['确定', '取消'] //按钮
+                }, function () {
+                    $.ajax({
+                        url: "/login/exit",
+                        type: "get",
+                        dataType: "json",
+                        success: function (res) {
+                            if (res.code === 5007) {
                                 location.href = "/login"
-                            },1000)
+                            }
+                        },
+                        error: function (err) {
+                            console.log('错误信息:' + err)
                         }
-                    },
-                    error: function (err) {
-                        console.log('错误信息:' + err)
-                    }
+                    })
+                }, function () {
+                    layer.msg('已取消', {
+                        icon: 1
+                    })
                 })
             })
         })
     </script>
 </body>
+
 </html>

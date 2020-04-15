@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="/css/msg.css">
     <title>错误处理</title>
 </head>
+
 <body>
     <div id="container">
         {{msg}}<span>5</span>秒后{{prevpage}}
@@ -19,17 +21,18 @@
         <img src="/img/ds-2.png" />
     </div>
     <script type="text/javascript">
-        var span,timer = null;
+        var span, timer = null;
         span = document.getElementsByTagName("span")[0];
-        timer = setInterval(function(){
+        timer = setInterval(function () {
             var oldcon = span.innerHTML;
             var newcon = oldcon - 1;
-            span.innerHTML = newcon; 	
-            if(newcon == 0){
+            span.innerHTML = newcon;
+            if (newcon == 0) {
                 clearInterval(timer);
                 location.href = "{{redirectUrl}}"
             }
-        },1000)
+        }, 1000)
     </script>
 </body>
+
 </html>

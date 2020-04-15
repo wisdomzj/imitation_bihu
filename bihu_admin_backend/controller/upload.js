@@ -6,7 +6,7 @@ class Upload{
         const basename = path.basename(file.path)
         const imgUrl =  `${ctx.origin}/upload/${basename}`
         const filename = file.name
-    
+        
         ctx.body = {
             file: {
                 imgUrl,

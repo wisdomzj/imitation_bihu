@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 let userSchema = mongoose.Schema({
     name:{type:String},
@@ -8,6 +8,6 @@ let userSchema = mongoose.Schema({
     avatar:{type:String}
 })
 
-let userModel = mongoose.model("users",userSchema,"user");
+let userModel = mongoose.model("users",userSchema,"user")
 
-module.exports = userModel; 
+module.exports = userModel

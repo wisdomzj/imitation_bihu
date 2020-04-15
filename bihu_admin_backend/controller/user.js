@@ -65,7 +65,9 @@ class User {
             const avaUrl = oldavatar.substr(ctx.origin.length,oldavatar.length)
             const oripath = path.join(__dirname,'../')
             const filepath = `${oripath}public${avaUrl}`
-            await tools.removeFile(filepath)
+            if(!filepath.includes('default')){
+                await tools.removeFile(filepath)
+            }
         }
     
         ctx.body = {
@@ -78,20 +80,18 @@ class User {
 
     async remove(ctx,next){
         const { _id, avatar } = ctx.request.body
-        let delfileRes = {
-            msg: 'success'
+        const avaUrl = avatar.substr(ctx.origin.length,avatar.length)
+        const oripath = path.join(__dirname,'../')
+        const filepath = `${oripath}public${avaUrl}`
+        const result = await userModel.remove({ _id }) 
+        
+        if(!filepath.includes('default')){
+            await tools.removeFile(filepath)
         }
-        if(!avatar.includes('/default')){
-            const avaUrl = avatar.substr(ctx.origin.length,avatar.length)
-            const oripath = path.join(__dirname,'../')
-            const filepath = `${oripath}public${avaUrl}`
-            delfileRes = await tools.removeFile(filepath)
-        }
-        const result = await userModel.remove({ _id })
+
         ctx.body = {
             data:{
-                result,
-                msg: delfileRes.msg  
+                result
             },
             code: 20000
         }

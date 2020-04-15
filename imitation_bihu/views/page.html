@@ -5,10 +5,10 @@
     <meta charset="UTF-8">
     <title>详情页</title>
     <script src="/js/jquery-1.11.3.min.js"></script>
-    <script src="/js/layer/layer.js"></script>
+    <script src="/layui/layui.all.js"></script>
+    <link rel="stylesheet" href="/layui/css/layui.css">
     <link rel="stylesheet" href="/css/iconfont.css">
     <link rel="stylesheet" href="/css/page.css">
-    <script src="/js/page.js"></script>
 </head>
 
 <body>
@@ -28,39 +28,93 @@
             <p><span>已 </span>收 藏</p>
         </div>
     </div>
+    <div class="container">
+        <div class="layui-form-item layui-form-text">
+            <img src="{{userData.avatar}}" class="layui-form-label" style="border-radius: 50%;">
+            <div class="layui-input-block">
+                <textarea id="content" placeholder="请输入内容" class="layui-textarea"></textarea>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div style="display: flex; justify-content: flex-end;">
+                <button type="button" class="layui-btn" id="gocomment">提交评论</button>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <ul id="main">
+                {{each commRes}}
+                <li style="display: flex;padding: 15px; justify-content: flex-start; justify-items: center;">
+                    <img src="{{$value.avatarUrl}}" style="border-radius: 50%; height: 35px; width: 35px;">
+                    <p
+                        style="margin-left: 20px;width: 100%; height: 35px; line-height: 35px; display: flex; justify-content: space-between;">
+                        <span>{{$value.nickName}}:{{$value.content}}</span>
+                        <span style="color: #ccc;">{{$value.ct}}</span>
+                    </p>
+                </li>
+                {{/each}}
+            </ul>
+            <div id="commpaginator" style="display: flex; justify-content: flex-end;"></div>
+        </div>
+    </div>
     {{include './common/footer.html' $setInfo}}
     <script>
-        var aid = "{{aid}}"
-        $(function(){
+        $(function () {
+            var aid = "{{@artRes._id}}"
+            var nickName = "{{userData.name}}"
+            var uid = "{{@userData._id}}"
+            var avatarUrl = "{{userData.avatar}}"
+            $("#gocomment").click(function () {
+                var content = $("#content").val()
+                var createTime = new Date()
+                $.ajax({
+                    url: "/article/addcomment",
+                    type: "post",
+                    data: {
+                        uid,
+                        avatarUrl,
+                        aid,
+                        content,
+                        createTime,
+                        nickName
+                    },
+                    success: function (res) {
+                        if (res.result) {
+                            var url = '/article/details/' + aid
+                            $("#main").load(url + ' #main>*')
+                            $("#content").val('')
+                        }
+                    }
+                })
+            })
             $(".container .star").click(function () {
                 var _this = $(this)
                 $.ajax({
-                    url:"/article/collection",
-                    type:"post",
-                    data:{
+                    url: "/article/collection",
+                    type: "post",
+                    data: {
                         aid
                     },
-                    dataType:"json",
-                    success:function(data){
+                    dataType: "json",
+                    success: function (data) {
                         var jqthis = $(this)
-                        if(data.stu === 1){
+                        if (data.stu === 1) {
                             layer.msg(data.msg, {
                                 offset: '75px',
                                 anim: 0
                             })
-                        }else if(data.stu === 2){
+                        } else if (data.stu === 2) {
                             layer.msg(data.msg, {
                                 offset: '75px',
                                 anim: 0
-                            })                 
+                            })
                             _this.addClass("cur")
-                        }else{
+                        } else {
                             layer.msg(data.msg, {
                                 offset: '75px',
                                 anim: 0
                             })
                             _this.removeClass("cur")
-                        }  
+                        }
                     }
                 })
             })

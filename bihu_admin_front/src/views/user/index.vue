@@ -1,22 +1,5 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
-      <!-- <el-input placeholder="测试" style="width: 200px;" class="filter-item" />
-      <el-select v-model="importance" placeholder="测试" clearable style="width: 200px" class="filter-item">
-        <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item" />
-      </el-select>
-      <el-button class="filter-item" type="primary" icon="el-icon-search">
-        搜索
-      </el-button>-->
-      <el-button
-        v-if="checkPermission(['admin'])"
-        class="filter-item"
-        style="margin-left:0"
-        type="primary"
-        icon="el-icon-edit"
-        @click="dialogaddUserVisible = true"
-      >添加</el-button>
-    </div>
     <el-table
       border
       :data="tableData"
@@ -320,7 +303,7 @@ export default {
     },
     doDel() {
       this.$request.delUser({ ...this.delUser }).then(res => {
-        if (res.data.result.deletedCount > 0 && res.data.msg === 'success') {
+        if (res.data.result.deletedCount > 0) {
           this.tableData = []
           this.getuserList()
           this.dialogdelUserVisible = false

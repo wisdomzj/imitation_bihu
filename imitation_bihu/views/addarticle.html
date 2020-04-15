@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>发表文章</title>
@@ -10,20 +11,37 @@
     <script type="text/javascript" src="/js/uploader.js"></script>
     <script type="text/javascript" src="/js/simditor.js"></script>
     <script src="/js/jquery.min.js"></script>
-    <script src="/js/layer/layer.js"></script>
+    <script src="/layui/layui.all.js"></script>
+    <link rel="stylesheet" href="/layui/css/layui.css">
     <link rel="stylesheet" href="/css/iconfont.css">
     <link rel="stylesheet" href="/css/addarticle.css">
 </head>
+
 <body>
     {{include './common/header.html' $islogin,$userData,$setInfo}}
     <div class="container">
         <div>
             <input type="text" class="title" placeholder="标题" id="title">
-            <textarea id="editor" placeholder="请输入文章内容" autofocus ></textarea>
+            <textarea id="editor" placeholder="请输入文章内容" autofocus></textarea>
+            <br />
+            <input type="file" id="upload">
+            <br />
             <script>
+                toolbar = ['title', 'bold', 'italic', 'underline', 'strikethrough',
+                    'color', '|', 'ol', 'ul', 'blockquote', 'code', 'table', '|',
+                    'link', 'image', 'hr', '|', 'indent', 'outdent'
+                ]
                 var editor = new Simditor({
-                    textarea: $('#editor')
-                });
+                    textarea: $('#editor'),
+                    toolbar: toolbar, //工具栏
+                    upload: {
+                        url: 'http://localhost:4000/article/upload', //文件上传的接口地址
+                        params: null, //键值对,指定文件上传接口的额外参数,上传的时候随文件一起提交
+                        fileKey: 'file', //服务器端获取文件数据的参数名
+                        connectionCount: 3,
+                        leaveConfirm: '正在上传文件'
+                    }
+                })
             </script>
             <input type="button" id="btn" value="发表">
         </div>
@@ -31,9 +49,33 @@
     {{include './common/footer.html' $setInfo}}
     <script>
         $(function () {
+            var imgUrl = null
+            $("#upload").change(function (e) {
+                var fd = new FormData()
+                fd.append("file", e.target.files[0])
+                $.ajax({
+                    url: '/article/upload',
+                    type: "post",
+                    processData: false,
+                    contentType: false,
+                    data: fd,
+                    success: function (res) {
+                        if (res.data.msg === "success") {
+                            layer.msg("添加封面成功", {
+                                offset: '100px',
+                                anim: 6
+                            })
+                            imgUrl = res.data.file.imgUrl
+                        }
+                    }
+                })
+            })
+
             $("#btn").click(function () {
                 var title = $("#title").val()
                 var content = $("#editor").val()
+
+
                 if (!title || !content) {
                     layer.msg('标题或内容不能为空', {
                         offset: '100px',
@@ -41,18 +83,28 @@
                     })
                     return
                 }
+
+                if (!imgUrl) {
+                    layer.msg("请上传一张封面图吧！！", {
+                        offset: '100px',
+                        anim: 6
+                    })
+                    return
+                }
+
                 $.ajax({
                     url: "/article/addcheck",
                     type: "post",
                     data: {
                         title,
-                        content
+                        content,
+                        imgUrl,
                     },
                     dataType: "json",
                     success: function (res) {
-                        if(res.data.msg === "success"){
+                        if (res.data.msg === "success") {
                             location.href = "/home"
-                        }else{
+                        } else {
                             layer.msg("添加失败", {
                                 offset: '100px',
                                 anim: 6
@@ -67,4 +119,5 @@
         })
     </script>
 </body>
+
 </html>

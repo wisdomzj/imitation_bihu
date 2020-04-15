@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose")
 
 let focusSchema = mongoose.Schema({
     title:{type:String},
@@ -8,6 +8,6 @@ let focusSchema = mongoose.Schema({
     pic:{type:String},    
 })
 
-let focusModel = mongoose.model("focuss",focusSchema,"focus");
+let focusModel = mongoose.model("focuss",focusSchema,"focus")
 
-module.exports = focusModel;
+module.exports = focusModel

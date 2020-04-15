@@ -34,6 +34,7 @@
     } // leftmenu end
     .r {
         width: 750px;
+        min-height: 450px;
         >ul {
             background: white;
             li {
@@ -128,6 +129,31 @@
     .rbox{
         width: 275px;
         height: 150px;
+        .scon{
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #ffffff;
+            .psty{
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                margin-bottom: 10px;
+                img{
+                    margin-right: 5px;
+                }
+            }
+            .links{
+                li{
+                    padding: 10px;
+                    .asty{
+                        color: #909399;
+                        &:hover{
+                            text-decoration:underline
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 let articleSchema = mongoose.Schema({
     uid:{type:String,ref:"users"},
@@ -14,6 +14,6 @@ let articleSchema = mongoose.Schema({
     imgUrl:{type:String}
 })
 
-let articleModel = mongoose.model("articles",articleSchema,"article");
+let articleModel = mongoose.model("articles",articleSchema,"article")
 
-module.exports = articleModel; 
+module.exports = articleModel

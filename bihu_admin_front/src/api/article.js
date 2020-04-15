@@ -18,6 +18,18 @@ const ARTICLE_API = {
   editArticle: {
     method: 'post',
     url: '/article/edit'
+  },
+  showallArtcomm: {
+    method: 'get',
+    url: '/article/findallArtcomm'
+  },
+  removComment: {
+    method: 'get',
+    url: '/article/removComment'
+  },
+  searchArticle: {
+    method: 'get',
+    url: '/article/searchArticle'
   }
 }
 

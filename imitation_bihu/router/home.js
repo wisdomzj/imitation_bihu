@@ -1,5 +1,7 @@
 const Router = require('koa-router')
-const router = new Router({ prefix: '/home' })
+const router = new Router({
+    prefix: '/home'
+})
 const articleModel = require("../model/articleModel")
 const userModel = require("../model/userModel")
 const focusModel = require("../model/focusModel")
@@ -10,10 +12,12 @@ const xss = require("xss")
 
 //首页
 router.get("/", async (ctx) => {
-    if(!ctx.session.userInfo){
+    if (!ctx.session.userInfo) {
         ctx.redirect('/login')
-    }else{
-        const { type } = ctx.request.query
+    } else {
+        const {
+            type
+        } = ctx.request.query
         const pageSize = 5
         const currentPage = ctx.query.curpage || 1
         let list = await articleModel.find({}, {}, {
@@ -22,9 +26,11 @@ router.get("/", async (ctx) => {
         }).sort({
             addTime: -1
         }).populate('uid')
-        switch(type){
+        switch (type) {
             case "news":
-                list = await articleModel.find({is_new: 1}, {}, {
+                list = await articleModel.find({
+                    is_new: 1
+                }, {}, {
                     skip: (currentPage - 1) * pageSize,
                     limit: pageSize
                 }).sort({
@@ -32,27 +38,31 @@ router.get("/", async (ctx) => {
                 }).populate('uid')
                 break
             case "hots":
-                list = await articleModel.find({is_hot: 1}, {}, {
+                list = await articleModel.find({
+                    is_hot: 1
+                }, {}, {
                     skip: (currentPage - 1) * pageSize,
                     limit: pageSize
                 }).sort({
                     add_time: -1
                 }).populate('uid')
-            break
+                break
             case "bests":
-                list = await articleModel.find({is_best: 1}, {}, {
+                list = await articleModel.find({
+                    is_best: 1
+                }, {}, {
                     skip: (currentPage - 1) * pageSize,
                     limit: pageSize
                 }).sort({
                     add_time: -1
                 }).populate('uid')
-            break
+                break
         }
 
         const total = await articleModel.count()
         const pageSum = Math.ceil(total / pageSize)
         let pnatorarr = []
-        
+
         for (let i = 1; i <= pageSum; i++) {
             pnatorarr.push(i)
         }
@@ -76,13 +86,22 @@ router.get("/", async (ctx) => {
             list,
             pnatorarr
         }
-        
-        const { uid, islogin } = ctx.session.userInfo
-        const userData = await userModel.findById({ _id:uid })
+
+        const {
+            uid,
+            islogin
+        } = ctx.session.userInfo
+        const userData = await userModel.findById({
+            _id: uid
+        })
         const setInfo = await settingModel.find({})
-        const focus = await focusModel.find({})
-        const links = await linkModel.find({status:1})
-        
+        const focus = await focusModel.find({
+            status: 1
+        })
+        const links = await linkModel.find({
+            status: 1
+        })
+
         ctx.render("home", {
             islogin,
             focus,
@@ -93,12 +112,6 @@ router.get("/", async (ctx) => {
             type: !type ? 'news' : type
         })
     }
-})
-
-
-// 搜索页
-router.get("/search", async (ctx) => {
-    ctx.body = "搜索功能开发中..."
 })
 
 

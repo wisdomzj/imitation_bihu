@@ -60,12 +60,10 @@
   color: #007BFF;
   justify-content: center;
   align-items: center;
-  transition: all 0.2s;
 }
 #header .center .r i {
   color: #007BFF;
   font-size: 20px;
-  transition: all 0.2s;
 }
 #header .center .r:hover {
   background: #007BFF;
@@ -115,6 +113,7 @@
   position: absolute;
   top: 60px;
   left: -15px;
+  z-index: 100;
   box-shadow: 1px 6px 12px rgba(0, 0, 0, 0.175);
   border-radius: 6px;
   overflow: hidden;
@@ -203,6 +202,7 @@ li {
 }
 .container .r {
   width: 750px;
+  min-height: 450px;
 }
 .container .r > ul {
   background: white;
@@ -296,4 +296,27 @@ li {
 .container .rbox {
   width: 275px;
   height: 150px;
+}
+.container .rbox .scon {
+  margin-bottom: 20px;
+  padding: 10px;
+  background: #ffffff;
+}
+.container .rbox .scon .psty {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.container .rbox .scon .psty img {
+  margin-right: 5px;
+}
+.container .rbox .scon .links li {
+  padding: 10px;
+}
+.container .rbox .scon .links li .asty {
+  color: #909399;
+}
+.container .rbox .scon .links li .asty:hover {
+  text-decoration: underline;
 }

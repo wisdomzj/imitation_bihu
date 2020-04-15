@@ -54,8 +54,9 @@
           <img v-else src="../../assets/no.gif" style="cursor: pointer;">
         </template>
       </el-table-column>
-      <el-table-column v-if="checkPermission(['admin'])" label="操作" width="150px" align="center">
+      <el-table-column v-if="checkPermission(['admin'])" label="操作" width="250px" align="center">
         <template slot-scope="scope">
+          <el-button size="mini" @click="handleSlectcom(scope.$index, scope.row)">查看评论</el-button>
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
           <el-button size="mini" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
         </template>
@@ -68,6 +69,42 @@
       :limit.sync="pagination.limit"
       @pagination="getarticleList"
     />
+    <el-dialog title="评论详情" :visible.sync="dialogTableVisible">
+      <el-table :data="gridData">
+        <el-table-column property="nickName" label="用户名" width="150" />
+        <el-table-column property="content" label="内容" width="150" />
+        <el-table-column label="评论时间" width="200px" align="center">
+          <template slot-scope="scope">
+            <i class="el-icon-time" />
+            <span style="margin-left: 10px">{{ scope.row.createTime | formatDate }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column v-if="checkPermission(['admin'])" label="操作" width="250px" align="center">
+          <template slot-scope="scope">
+            <el-button size="mini" type="danger" @click="handlecommDelete(scope.$index, scope.row)">删除</el-button>
+          </template>
+        </el-table-column>
+        <el-dialog
+          width="30%"
+          title="提示"
+          :visible.sync="innerVisible"
+          append-to-body
+        >
+          <span>确定删除该评论吗</span>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="innerVisible = false">取 消</el-button>
+            <el-button type="primary" @click="docommDel">确 定</el-button>
+          </span>
+        </el-dialog>
+      </el-table>
+      <pagination
+        v-show="commpagination.total>0"
+        :total="commpagination.total"
+        :page.sync="commpagination.page"
+        :limit.sync="commpagination.limit"
+        @pagination="getcommentList"
+      />
+    </el-dialog>
     <el-dialog title="提示" :visible.sync="dialogdelArtVisible" width="30%">
       <span>确定删除该文章吗</span>
       <span slot="footer" class="dialog-footer">
@@ -87,9 +124,19 @@ export default {
     return {
       tableData: [],
       dialogdelArtVisible: false,
+      dialogTableVisible: false,
+      innerVisible: false,
       delArticle: {
         _id: '',
         imgUrl: ''
+      },
+      artId: '',
+      commId: '',
+      gridData: [],
+      commpagination: {
+        total: 0,
+        page: 1,
+        limit: 5
       },
       pagination: {
         total: 0,
@@ -117,6 +164,32 @@ export default {
           this.loading = false
         })
     },
+    getcommentList() {
+      this.$request
+        .showallArtcomm({
+          aid: this.artId,
+          page: this.commpagination.page,
+          size: this.commpagination.limit
+        })
+        .then(res => {
+          const { list, total } = res.data
+          this.gridData = list
+          this.commpagination.total = total
+          if (list.length > 0) {
+            this.dialogTableVisible = true
+          } else {
+            this.$message('暂无评论信息')
+          }
+        })
+    },
+    handleSlectcom(index, row) {
+      this.artId = row._id
+      this.getcommentList()
+    },
+    handlecommDelete(index, row) {
+      this.commId = row._id
+      this.innerVisible = true
+    },
     handleEdit(index, row) {
       this.$router.push({ path: '/article/edit', query: { id: row._id }})
     },
@@ -126,9 +199,17 @@ export default {
       this.delArticle.imgUrl = imgUrl
       this.dialogdelArtVisible = true
     },
+    docommDel() {
+      this.$request.removComment({ cid: this.commId }).then((res) => {
+        if (res.data.result.deletedCount > 0) {
+          this.getcommentList()
+          this.innerVisible = false
+        }
+      })
+    },
     doDel() {
       this.$request.removeArticle({ ...this.delArticle }).then(res => {
-        if (res.data.result.deletedCount > 0 && res.data.msg === 'success') {
+        if (res.data.result.deletedCount > 0) {
           this.tableData = []
           this.getarticleList()
           this.dialogdelArtVisible = false

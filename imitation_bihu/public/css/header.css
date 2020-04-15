@@ -72,9 +72,6 @@
 #header .center .r:hover i {
   color: white;
 }
-#header .center .logreg {
-  margin-left: 15px;
-}
 #header .center .logreg a {
   display: block;
   float: left;

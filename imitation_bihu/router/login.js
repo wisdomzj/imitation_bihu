@@ -1,20 +1,27 @@
 const Router = require('koa-router')
-const router = new Router({ prefix: '/login' })
+const router = new Router({
+    prefix: '/login'
+})
 const userModel = require("../model/userModel")
 const settingModel = require("../model/settingModel")
 
 //登录
 router.get("/", async (ctx, next) => {
     const setInfo = await settingModel.find({})
-    await ctx.render("login",{
+    await ctx.render("login", {
         setInfo
     })
 })
 
 //登录验证
 router.post("/check", async (ctx, next) => {
-    const { name, password } = ctx.request.body
-    const userRes = await userModel.findOne({ name })
+    const {
+        name,
+        password
+    } = ctx.request.body
+    const userRes = await userModel.findOne({
+        name
+    })
     if (!userRes) {
         ctx.body = {
             msg: "用户不存在",
