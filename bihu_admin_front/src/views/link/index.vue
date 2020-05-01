@@ -41,7 +41,7 @@
           <el-input v-model="addfocusInfo.linkName" placeholder="请输入标题" clearable />
         </el-form-item>
         <el-form-item label="链接地址">
-          <el-input v-model="addfocusInfo.url" placeholder="请输入链接地址" clearable />
+          <el-input v-model="addfocusInfo.linkurl" placeholder="请输入链接地址" clearable />
         </el-form-item>
         <el-form-item label="发布时间">
           <el-date-picker
@@ -157,15 +157,20 @@ export default {
     getlinkList() {
       this.loading = true
       this.$request.linkFindAll({}).then(res => {
-        const { list } = res.data
-        this.tableData = list
+        const { result, err_code, msg } = res.data
+        if (!err_code && msg === 'ok') {
+          const { list, total } = result
+          this.loading = false
+          this.tableData = list
+          this.pagination.total = total
+        }
       })
     },
     handleEdit(index, row) {
       this.dialogeditVisible = true
       this.editfocusInfo._id = row._id
       this.$request.showLink({ id: row._id }).then(res => {
-        const { status, linkName, url, addTime } = res.result
+        const { status, linkName, url, addTime } = res.data.result
         this.editfocusInfo.review = status === 1 ? '审核' : '未审核'
         this.editfocusInfo.linkName = linkName
         this.editfocusInfo.linkurl = url
@@ -178,7 +183,8 @@ export default {
     },
     doDel() {
       this.$request.delLink({ id: this.linkId }).then(res => {
-        if (res.result.deletedCount > 0) {
+        const { result } = res.data
+        if (result.deletedCount > 0) {
           this.tableData = []
           this.getlinkList()
           this.dialogdelVisible = false
@@ -202,11 +208,18 @@ export default {
         !this.addfocusInfo.addTime ||
         !this.addfocusInfo.review
       ) {
+        console.log(this.addfocusInfo)
         this.$message.info('标题 | 链接地址 | 发布时间 | 审核状态 是必填项')
         return
       }
       this.$request.addLink({ ...this.addfocusInfo }).then(res => {
-        if (res.result) {
+        const { result } = res.data
+        if (!result) {
+          this.$notify.error({
+            title: '错误',
+            message: '添加友情链接失败'
+          })
+        } else {
           this.dialogaddVisible = false
           this.tableData = []
           this.getlinkList()
@@ -219,17 +232,13 @@ export default {
           this.addfocusInfo.linkurl = ''
           this.addfocusInfo.addTime = ''
           this.addfocusInfo.review = ''
-        } else {
-          this.$notify.error({
-            title: '错误',
-            message: '添加友情链接失败'
-          })
         }
       })
     },
     doEdit() {
       this.$request.editLink({ ...this.editfocusInfo }).then(res => {
-        if (res.result.nModified > 0) {
+        const { result } = res.data
+        if (result.nModified > 0) {
           this.tableData = []
           this.getlinkList()
           this.dialogeditVisible = false
@@ -238,7 +247,7 @@ export default {
             message: '编辑友情链接成功',
             type: 'success'
           })
-        } else if (res.result.nModified === 0) {
+        } else if (result.nModified === 0) {
           this.$notify({
             title: '警告',
             message: '你好像没进行修改数据的操作,淘气~',

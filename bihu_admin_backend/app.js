@@ -10,7 +10,6 @@ const { dbUrl } = require('./cmsSys.config')
 const routing = require('./router')
 const path = require('path')
 const app = new Koa()
-const ENV = 'test-iougz'
 
 // 数据库链接
 mongoose.connect(dbUrl,{
@@ -27,31 +26,31 @@ mongoose.connection.on("open", () => {
 	console.log("------数据库连接成功！------")
 })
 
-// 静态资源
-app.use(static(path.join(__dirname,"./public")))
+// 跨域
+app.use(cors())
 
 // 统一捕获错误
 app.use(error({
     postFormat: (e, {stack, ...rest}) => process.env.NODE_ENV === 'production' ? rest :  {stack, ...rest}
 }))
 
-// 验证token
-// app.use(koajwt({
-// 	secret: 'my_token'
-// }).unless({
-// 	path: [/\/admin\/login/]
-// }))
+// 静态资源
+app.use(static(path.join(__dirname,"./public")))
 
-// 跨域
-app.use(cors({
-    origin: ['http://localhost:9528'],
-    credentials: true
+// 验证token
+app.use(koajwt({
+	secret: 'my_token'
+}).unless({
+	path: [
+        /^\/admin\/login/,
+        /^\/public/
+    ]
 }))
 
 // 校验参数
 app.use(parameter(app))
 
-// 接受参数
+// 接受post和文件
 app.use(koabody({
     multipart:true,
     formidable:{
@@ -60,11 +59,7 @@ app.use(koabody({
     }
 }))
 
-app.use(async (ctx, next)=>{
-    ctx.state.env = ENV
-    await next()
-})
-
+// 路由处理
 routing(app)
 
 app.listen(3000, ()=>{

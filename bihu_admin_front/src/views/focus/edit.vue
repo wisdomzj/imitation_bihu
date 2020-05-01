@@ -90,7 +90,7 @@ export default {
       const { id } = this.$route.query
       this.focusId = id
       this.$request.showFocus({ id }).then(res => {
-        const { status, title, url, addTime, pic } = res.result
+        const { status, title, url, addTime, pic } = res.data.result
         this.form.review = status === 1 ? '审核' : '未审核'
         this.form.title = title
         this.form.focurl = url
@@ -115,24 +115,26 @@ export default {
           }
         })
         .then(res => {
-          if (res.msg === 'success') {
-            that.form.pic = res.file.imgUrl
+          const { imgUrl, filename } = res.data.result
+          if (!res.data.err_code && res.data.msg === 'ok') {
+            that.form.pic = imgUrl
             that.$notify({
               title: '成功',
-              message: '上传轮播图成功',
+              message: `${filename}上传成功`,
               type: 'success'
             })
           } else {
             that.$notify.error({
               title: '错误',
-              message: '上传轮播图失败'
+              message: `${filename}上传失败`
             })
           }
         })
     },
     onSubmit() {
       this.$request.editFocus({ _id: this.focusId, ...this.form }).then(res => {
-        if (res.result.nModified > 0) {
+        const { result } = res.data
+        if (result.nModified > 0) {
           MessageBox.confirm(
             '您以编辑成功，可以取消停留在此页面上，或者前往轮播图列表查看',
             '编辑成功',
@@ -144,7 +146,7 @@ export default {
           ).then(() => {
             this.$router.push({ path: '/focus/list' })
           })
-        } else if (res.result.nModified === 0) {
+        } else if (result.nModified === 0) {
           this.$notify({
             title: '警告',
             message: '你好像没进行修改数据的操作,淘气~',

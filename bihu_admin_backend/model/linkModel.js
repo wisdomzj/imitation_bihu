@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 let linkSchema = mongoose.Schema({
     linkName:{type:String},
@@ -7,6 +7,6 @@ let linkSchema = mongoose.Schema({
     status:{type:Number}    
 })
 
-let linkModel = mongoose.model("links",linkSchema,"link");
+let linkModel = mongoose.model('links',linkSchema,'link')
 
-module.exports = linkModel;
+module.exports = linkModel

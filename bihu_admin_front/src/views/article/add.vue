@@ -187,17 +187,18 @@ export default {
           }
         })
         .then(res => {
-          if (res.msg === 'success') {
-            that.form.imgUrl = res.file.imgUrl
+          const { imgUrl, filename } = res.data.result
+          if (!res.data.err_code && res.data.msg === 'ok') {
+            that.form.imgUrl = imgUrl
             that.$notify({
               title: '成功',
-              message: '上传封面图成功',
+              message: `${filename}上传成功`,
               type: 'success'
             })
           } else {
             that.$notify.error({
               title: '错误',
-              message: '上传封面图失败'
+              message: `${filename}上传失败`
             })
           }
         })
@@ -211,13 +212,14 @@ export default {
           }
         })
         .then(res => {
+          const { imgUrl } = res.data.result
           // 获取富文本组件实例
           const quill = that.$refs.myQuillEditor.quill
-          if (res.msg === 'success') {
+          if (!res.data.err_code && res.data.msg === 'ok') {
             // 获取光标所在位置
             const length = quill.getSelection().index
             // 插入图片，res为服务器返回的图片链接地址
-            quill.insertEmbed(length, 'image', res.file.imgUrl)
+            quill.insertEmbed(length, 'image', imgUrl)
             that.$notify({
               title: '成功',
               message: '插入图片成功',
@@ -241,7 +243,7 @@ export default {
         return
       }
       this.$request.addArticle({ ...this.form }).then(res => {
-        if (res.result) {
+        if (res.data.result) {
           MessageBox.confirm(
             '您以添加成功，可以取消停留在此页面上，或者前往文章列表查看',
             '添加成功',

@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 let articleSchema = mongoose.Schema({
-    uid:{type:String,ref:"users"},
+    uid:{type:String,ref:'users'},
     title:{type:String},
     status:{type:Number},
     is_best:{type:Number},
@@ -14,6 +14,6 @@ let articleSchema = mongoose.Schema({
     imgUrl:{type:String}
 })
 
-let articleModel = mongoose.model("articles",articleSchema,"article");
+let articleModel = mongoose.model('articles',articleSchema,'article')
 
-module.exports = articleModel; 
+module.exports = articleModel

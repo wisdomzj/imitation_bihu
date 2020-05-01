@@ -1,15 +1,17 @@
-
 const settingModel = require("../model/settingModel")
 const path = require('path')
 const tools = require('../utils/Tools')
 
 class Setting{
     async info(ctx,next){
-        const info = await settingModel.findOne({}) 
+        const result = await settingModel.findOne({}) 
         
         ctx.body = {
-            data: info,
-            code: 20000
+            data:{
+                result,
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 
@@ -24,8 +26,11 @@ class Setting{
         const result = await settingModel.updateOne({ _id }, { ...data })
         
         ctx.body = {
-            result,
-            code: 20000
+            data:{
+                result,
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 }

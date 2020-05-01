@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
 
 let adminSchema = mongoose.Schema({
     name:{type:String},
@@ -9,6 +9,6 @@ let adminSchema = mongoose.Schema({
     avatar:{type:String}
 })
 
-let adminModel = mongoose.model("admins",adminSchema,"admin");
+let adminModel = mongoose.model('admins',adminSchema,'admin')
 
-module.exports = adminModel; 
+module.exports = adminModel

@@ -84,19 +84,19 @@
             <el-button size="mini" type="danger" @click="handlecommDelete(scope.$index, scope.row)">删除</el-button>
           </template>
         </el-table-column>
-        <el-dialog
-          width="30%"
-          title="提示"
-          :visible.sync="innerVisible"
-          append-to-body
-        >
-          <span>确定删除该评论吗</span>
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="innerVisible = false">取 消</el-button>
-            <el-button type="primary" @click="docommDel">确 定</el-button>
-          </span>
-        </el-dialog>
       </el-table>
+      <el-dialog
+        width="30%"
+        title="提示"
+        :visible.sync="innerVisible"
+        append-to-body
+      >
+        <span>确定删除该评论吗</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="innerVisible = false">取 消</el-button>
+          <el-button type="primary" @click="docommDel">确 定</el-button>
+        </span>
+      </el-dialog>
       <pagination
         v-show="commpagination.total>0"
         :total="commpagination.total"
@@ -158,10 +158,13 @@ export default {
           size: this.pagination.limit
         })
         .then(res => {
-          const { list1, total } = res.data
-          this.tableData = list1
-          this.pagination.total = total
-          this.loading = false
+          const { result, err_code, msg } = res.data
+          if (!err_code && msg === 'ok') {
+            const { list, total } = result
+            this.loading = false
+            this.tableData = list
+            this.pagination.total = total
+          }
         })
     },
     getcommentList() {
@@ -172,7 +175,7 @@ export default {
           size: this.commpagination.limit
         })
         .then(res => {
-          const { list, total } = res.data
+          const { list, total } = res.data.result
           this.gridData = list
           this.commpagination.total = total
           if (list.length > 0) {

@@ -76,8 +76,11 @@ export default {
   methods: {
     getsettingInfo() {
       this.$request.settingInfo({}).then((res) => {
-        this.form = res.data
-        this.form.oldlogo = res.data.logo
+        const { result, err_code, msg } = res.data
+        if (!err_code && msg === 'ok') {
+          this.form = result
+          this.form.oldlogo = result.logo
+        }
       })
     },
     beforeCoverImgUpload(file) {
@@ -96,17 +99,19 @@ export default {
           }
         })
         .then(res => {
-          if (res.msg === 'success') {
-            that.form.logo = res.file.imgUrl
+          const { result, err_code, msg } = res.data
+          const { imgUrl, filename } = result
+          if (!err_code && msg === 'ok') {
+            that.form.logo = imgUrl
             that.$notify({
               title: '成功',
-              message: '上传网站logo成功',
+              message: `${filename}上传成功`,
               type: 'success'
             })
           } else {
             that.$notify.error({
               title: '错误',
-              message: '上传网站logo失败'
+              message: `${filename}上传成功`
             })
           }
         })
@@ -117,14 +122,15 @@ export default {
           'Content-Type': 'multipart/form-data;charset=UTF-8'
         }
       }).then((res) => {
-        if (res.result.nModified > 0) {
+        const { result } = res.data
+        if (result.nModified > 0) {
           this.getsettingInfo()
           this.$notify({
             title: '成功',
             message: '编辑网站设置成功',
             type: 'success'
           })
-        } else if (res.result.nModified === 0) {
+        } else if (result.nModified === 0) {
           this.$notify({
             title: '警告',
             message: '你好像没进行修改数据的操作,淘气~',

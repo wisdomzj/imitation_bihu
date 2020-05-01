@@ -1,24 +1,28 @@
-import request from '@/utils/request'
-
-export function login(data) {
-  return request({
-    url: '/vue-admin-template/user/login',
-    method: 'post',
-    data
-  })
-}
-
-export function getInfo(token) {
-  return request({
-    url: '/vue-admin-template/user/info',
+const USER_API = {
+  userList: {
     method: 'get',
-    params: { token }
-  })
+    url: '/user/findAll'
+  },
+  usersInfo: {
+    method: 'get',
+    url: '/user/findAllName'
+  },
+  addUser: {
+    method: 'post',
+    url: '/user/add'
+  },
+  delUser: {
+    method: 'post',
+    url: '/user/remove'
+  },
+  editUser: {
+    method: 'post',
+    url: '/user/edit'
+  },
+  showUser: {
+    method: 'get',
+    url: '/user/findById'
+  }
 }
 
-export function logout() {
-  return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
-  })
-}
+export default USER_API

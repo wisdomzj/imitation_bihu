@@ -1,3 +1,4 @@
+
 const userModel = require("../model/userModel")
 const path = require('path')
 const tools = require('../utils/Tools')
@@ -16,13 +17,16 @@ class User {
         
         ctx.body = {
             data: {
-                total,
-                curpage,
-                len,
-                sum,
-                list
-            },
-            code: 20000
+                result:{
+                    total,
+                    curpage,
+                    len,
+                    sum,
+                    list
+                },
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 
@@ -36,9 +40,10 @@ class User {
         })     
         ctx.body = {
             data:{
-                result
-            },
-            code: 20000
+                result,
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 
@@ -48,9 +53,10 @@ class User {
         
         ctx.body = {
             data:{
-                result
-            },
-            code: 20000
+                result,
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 
@@ -71,10 +77,11 @@ class User {
         }
     
         ctx.body = {
-            data:{
-                result
-            },
-            code: 20000
+            data: {
+                result,
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 
@@ -90,10 +97,11 @@ class User {
         }
 
         ctx.body = {
-            data:{
-                result
-            },
-            code: 20000
+            data: {
+                result,
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 
@@ -104,9 +112,10 @@ class User {
     
         ctx.body = {
             data:{
-                result
-            },
-            code: 20000 
+                result,
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 }

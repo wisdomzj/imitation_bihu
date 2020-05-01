@@ -180,17 +180,18 @@ export default {
           }
         })
         .then(res => {
-          if (res.msg === 'success') {
-            that.form.imgUrl = res.file.imgUrl
+          const { imgUrl, filename } = res.data.result
+          if (!res.data.err_code && res.data.msg === 'ok') {
+            that.form.pic = imgUrl
             that.$notify({
               title: '成功',
-              message: '上传封面图成功',
+              message: `${filename}上传成功`,
               type: 'success'
             })
           } else {
             that.$notify.error({
               title: '错误',
-              message: '上传封面图失败'
+              message: `${filename}上传失败`
             })
           }
         })
@@ -204,13 +205,14 @@ export default {
           }
         })
         .then(res => {
+          const { imgUrl } = res.data.result
           // 获取富文本组件实例
           const quill = that.$refs.myQuillEditor.quill
-          if (res.msg === 'success') {
+          if (!res.data.err_code && res.data.msg === 'ok') {
             // 获取光标所在位置
             const length = quill.getSelection().index
             // 插入图片，res为服务器返回的图片链接地址
-            quill.insertEmbed(length, 'image', res.file.imgUrl)
+            quill.insertEmbed(length, 'image', imgUrl)
             that.$notify({
               title: '成功',
               message: '插入图片成功',
@@ -240,7 +242,7 @@ export default {
           is_best,
           status,
           imgUrl
-        } = res.result
+        } = res.data.result
         this.form.uid = uid._id
         this.author = uid.name
         this.form.title = title
@@ -270,7 +272,8 @@ export default {
           }
         })
         .then(res => {
-          if (res.result.nModified > 0) {
+          const { result } = res.data
+          if (result.nModified > 0) {
             MessageBox.confirm(
               '您以编辑成功，可以取消停留在此页面上，或者前往文章列表查看',
               '编辑成功',
@@ -282,7 +285,7 @@ export default {
             ).then(() => {
               this.$router.push({ path: '/article/list' })
             })
-          } else if (res.data.result.nModified === 0) {
+          } else if (result.nModified === 0) {
             this.$notify({
               title: '警告',
               message: '你好像没进行修改数据的操作,淘气~',

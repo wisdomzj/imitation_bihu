@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 let navSchema = mongoose.Schema({
     navName:{type:String},
@@ -7,6 +7,6 @@ let navSchema = mongoose.Schema({
     status:{type:Number}    
 })
 
-let navModel = mongoose.model("navs",navSchema,"nav");
+let navModel = mongoose.model('navs',navSchema,'nav')
 
-module.exports = navModel;
+module.exports = navModel

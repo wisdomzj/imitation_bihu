@@ -13,14 +13,17 @@ class Link{
         }).sort({addTime: -1}) 
         
         ctx.body = {
-            data: {
-                total,
-                curpage,
-                len,
-                sum,
-                list
-            },
-            code: 20000
+            data:{
+                result:{
+                    total,
+                    curpage,
+                    len,
+                    sum,
+                    list
+                },
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 
@@ -28,9 +31,12 @@ class Link{
         const list = await linkModel.find({}).sort({addTime: -1})
         ctx.body = {
             data: {
-                list
-            },
-            code: 20000
+                result:{
+                    list
+                },
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 
@@ -39,8 +45,11 @@ class Link{
         const result = await linkModel.findById({ _id })
         
         ctx.body = {
-            result,
-            code: 20000
+            data:{
+                result,
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 
@@ -50,8 +59,11 @@ class Link{
         const result = await linkModel.updateOne({ _id }, {...data, url:linkurl, status})
         
         ctx.body = {
-            result,
-            code: 20000
+            data:{
+                result,
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 
@@ -60,8 +72,11 @@ class Link{
         const result = await linkModel.remove({ _id })
         
         ctx.body = {
-            result,
-            code: 20000
+            data:{
+                result,
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 
@@ -72,8 +87,11 @@ class Link{
         const result = await linkEntity.save()
         
         ctx.body = {
-            result,
-            code: 20000 
+            data:{
+                result,
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 }

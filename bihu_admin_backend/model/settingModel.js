@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 let settingSchema = mongoose.Schema({
     websiteName:{type:String},
@@ -11,6 +11,6 @@ let settingSchema = mongoose.Schema({
     setTime:{type:Date}    
 })
 
-let settingModel = mongoose.model("settings",settingSchema,"setting");
+let settingModel = mongoose.model('settings',settingSchema,'setting')
 
-module.exports = settingModel;
+module.exports = settingModel

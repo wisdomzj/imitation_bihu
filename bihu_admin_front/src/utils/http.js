@@ -1,11 +1,13 @@
 import axios from 'axios'
-import users from '@/api/uuser'
+import users from '@/api/user'
 import article from '@/api/article'
 import focus from '@/api/focus'
 import nav from '@/api/nav'
 import link from '@/api/link'
 import upload from '@/api/upload'
 import setting from '@/api/setting'
+import admin from '@/api/admin'
+import { getToken } from '@/utils/auth'
 
 const instance = axios.create({
   baseURL: 'http://localhost:3000',
@@ -21,7 +23,8 @@ const service = {
   ...nav,
   ...link,
   ...upload,
-  ...setting
+  ...setting,
+  ...admin
 }
 
 for (const key in service) {
@@ -68,13 +71,17 @@ for (const key in service) {
 }
 
 instance.interceptors.request.use(config => {
+  const token = getToken('token')
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
   return config
 }, error => {
   return Promise.reject(error)
 })
 
-instance.interceptors.response.use(res => {
-  return res.data
+instance.interceptors.response.use(response => {
+  return response.data
 }, error => {
   return Promise.reject(error)
 })

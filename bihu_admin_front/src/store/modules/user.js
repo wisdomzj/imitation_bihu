@@ -1,6 +1,6 @@
-import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
+import http from '@/utils/http'
 
 const state = {
   token: getToken(),
@@ -25,64 +25,51 @@ const mutations = {
 }
 
 const actions = {
-  // user login
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
-        resolve()
+      http.login({ name: username.trim(), password: password }).then(response => {
+        const { result, err_code, msg } = response.data
+        commit('SET_TOKEN', result.token)
+        setToken(result.token)
+        resolve({ err_code, msg })
       }).catch(error => {
         reject(error)
       })
     })
   },
 
-  // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token).then(response => {
-        const { data } = response
+      http.getInfo({}).then(response => {
+        const { result, err_code, msg } = response.data
 
-        if (!data) {
+        if (!result) {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, name, avatar } = data
-
-        // roles must be a non-empty array
-        if (!roles || roles.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
-        }
-
+        const { role, name, avatar } = result
+        const roles = !role ? ['editor'] : ['admin']
         commit('SET_ROLES', roles)
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
-        resolve(data)
+        resolve({ roles, err_code, msg })
       }).catch(error => {
         reject(error)
       })
     })
   },
 
-  // user logout
-  logout({ commit, state, dispatch }) {
-    return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        commit('SET_TOKEN', '')
-        commit('SET_ROLES', [])
-        removeToken()
-        resetRouter()
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+  logout({ commit, state }) {
+    return new Promise(resolve => {
+      commit('SET_TOKEN', '')
+      commit('SET_ROLES', [])
+      removeToken()
+      resetRouter()
+      resolve()
     })
   },
 
-  // remove token
   resetToken({ commit }) {
     return new Promise(resolve => {
       commit('SET_TOKEN', '')

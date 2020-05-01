@@ -74,10 +74,11 @@ export default {
     getfocusList() {
       this.loading = true
       this.$request.focusFindAll({}).then(res => {
-        const { list, total } = res.data
-        this.tableData = list
-        this.pagination.total = total
-        this.loading = false
+        const { result, err_code, msg } = res.data
+        if (!err_code && msg === 'ok') {
+          this.tableData = result
+          this.loading = false
+        }
       })
     },
     handleEdit(index, row) {
@@ -91,7 +92,8 @@ export default {
     },
     doDel() {
       this.$request.delFocus({ ...this.delFocus }).then(res => {
-        if (res.data.result.deletedCount > 0 && res.data.msg === 'success') {
+        const { dlRes } = res.data.result
+        if (dlRes.deletedCount > 0) {
           this.tableData = []
           this.getfocusList()
           this.dialogdelfocusVisible = false

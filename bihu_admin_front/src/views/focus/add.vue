@@ -80,17 +80,18 @@ export default {
           }
         })
         .then(res => {
-          if (res.msg === 'success') {
-            that.form.pic = res.file.imgUrl
+          const { imgUrl, filename } = res.data.result
+          if (!res.data.err_code && res.data.msg === 'ok') {
+            that.form.pic = imgUrl
             that.$notify({
               title: '成功',
-              message: '上传轮播图成功',
+              message: `${filename}上传成功`,
               type: 'success'
             })
           } else {
             that.$notify.error({
               title: '错误',
-              message: '上传轮播图失败'
+              message: `${filename}上传失败`
             })
           }
         })
@@ -105,7 +106,7 @@ export default {
         return
       }
       this.$request.addFocus({ ...this.form }).then((res) => {
-        if (res.result) {
+        if (res.data.result) {
           MessageBox.confirm('您以添加成功，可以取消停留在此页面上，或者前往轮播图列表查看', '添加成功', {
             confirmButtonText: '前往列表页',
             cancelButtonText: '取消',

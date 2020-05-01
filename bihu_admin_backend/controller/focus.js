@@ -16,23 +16,27 @@ class Focus{
         
         ctx.body = {
             data: {
-                total,
-                curpage,
-                len,
-                sum,
-                list
-            },
-            code: 20000
+                result:{
+                    total,
+                    curpage,
+                    len,
+                    sum,
+                    list
+                },
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 
     async findAll_notPaging(ctx,next){
-        const list = await focusModel.find({}).sort({addTime: -1})
+        const result = await focusModel.find({}).sort({addTime: -1})
         ctx.body = {
             data: {
-                list
-            },
-            code: 20000
+                result,
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 
@@ -41,8 +45,11 @@ class Focus{
         const result = await focusModel.findById({ _id })
         
         ctx.body = {
-            result,
-            code: 20000
+            data:{
+                result,
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 
@@ -64,8 +71,11 @@ class Focus{
         })
         
         ctx.body = {
-            result,
-            code: 20000
+            data:{
+                result,
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 
@@ -75,14 +85,17 @@ class Focus{
         const oripath = path.join(__dirname,'../')
         const filepath = `${oripath}public${pciUrl}`
         const delfileRes = await tools.removeFile(filepath)
-        const result = await focusModel.remove({ _id })
+        const dlRes = await focusModel.remove({ _id })
         
         ctx.body = {
             data: {
-                result,
-                msg: delfileRes.msg 
-            },
-            code: 20000
+                result:{
+                    dlRes,
+                    delfileRes: delfileRes.msg 
+                },
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 
@@ -93,8 +106,11 @@ class Focus{
         const result = await focusEntity.save()
         
         ctx.body = {
-            result,
-            code: 20000 
+            data:{
+                result,
+                msg:'ok',
+                err_code: 0
+            }
         }
     }
 }

@@ -1,6 +1,17 @@
 <template>
   <div class="app-container">
+    <div class="filter-container">
+      <el-button
+        v-if="checkPermission(['admin'])"
+        class="filter-item"
+        style="margin-left:0"
+        type="primary"
+        icon="el-icon-edit"
+        @click="dialogaddUserVisible = true"
+      >添加</el-button>
+    </div>
     <el-table
+      v-loading="loading"
       border
       :data="tableData"
       fit
@@ -29,12 +40,6 @@
           <span style="margin-left: 10px">{{ scope.row.addTime | formatDate }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="上次登录日期" align="center" width="200px">
-        <template slot-scope="scope">
-          <i class="el-icon-time" />
-          <span style="margin-left: 10px">{{ scope.row.loginTime | formatDate }}</span>
-        </template>
-      </el-table-column>
       <el-table-column v-if="checkPermission(['admin'])" label="操作" align="center">
         <template slot-scope="scope">
           <el-button size="mini" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -49,13 +54,23 @@
       :limit.sync="pagination.limit"
       @pagination="getuserList"
     />
-    <el-dialog title="添加用户" :visible.sync="dialogaddUserVisible">
+    <el-dialog title="添加用户1111" :visible.sync="dialogaddUserVisible">
       <el-form :model="addUser">
         <el-form-item label="用户名" :label-width="formLabelWidth">
           <el-input v-model="addUser.name" placeholder="请输入用户名" maxlength="10" clearable />
         </el-form-item>
         <el-form-item label="用户密码" :label-width="formLabelWidth">
           <el-input v-model="addUser.password" placeholder="请输入密码" maxlength="6" show-password />
+        </el-form-item>
+        <el-form-item label="用户权限" :label-width="formLabelWidth">
+          <el-select v-model="addUser.role" placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="用户头像" :label-width="formLabelWidth">
           <el-upload
@@ -143,6 +158,7 @@ export default {
         name: '',
         password: '',
         avatar: '',
+        role: '',
         loginTime: new Date(),
         addTime: new Date()
       },
@@ -163,6 +179,13 @@ export default {
         page: 1,
         limit: 5
       },
+      options: [{
+        label: '普通管理员',
+        value: 0
+      }, {
+        label: '管理员',
+        value: 1
+      }],
       loading: false,
       dialogaddUserVisible: false,
       dialogeditUserVisible: false,
@@ -183,13 +206,14 @@ export default {
           size: this.pagination.limit
         })
         .then(res => {
-          const { list, total } = res.data
-          this.tableData = list
-          this.pagination.total = total
+          const { result, err_code, msg } = res.data
+          if (!err_code && msg === 'ok') {
+            const { list, total } = result
+            this.loading = false
+            this.tableData = list
+            this.pagination.total = total
+          }
         })
-    },
-    handleFilter() {
-      console.log('搜索')
     },
     handleEdit(index, row) {
       this.editUser._id = row._id
@@ -226,7 +250,6 @@ export default {
     },
     beforeAvatarUpload(file) {
       const isLt2M = file.size / 1024 / 1024 < 2
-
       if (!isLt2M) {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
@@ -234,8 +257,9 @@ export default {
     },
     async addAvatar(params) {
       const res = await this._isUpload(params)
-      if (res.msg === 'success') {
-        this.addUser.avatar = res.file.imgUrl
+      const { imgUrl } = res.data.result
+      if (!res.data.err_code && res.data.msg === 'ok') {
+        this.addUser.avatar = imgUrl
         this.$notify({
           title: '成功',
           message: '上传头像成功',
@@ -250,8 +274,9 @@ export default {
     },
     async editAvatar(params) {
       const res = await this._isUpload(params)
-      if (res.msg === 'success') {
-        this.editUser.avatar = res.file.imgUrl
+      const { imgUrl } = res.data.result
+      if (!res.data.err_code && res.data.msg === 'ok') {
+        this.editUser.avatar = imgUrl
         this.$notify({
           title: '成功',
           message: '编辑头像成功',
