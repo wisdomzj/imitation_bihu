@@ -6,9 +6,6 @@ const tools = require('../utils/Tools')
 class Admin{
     async login(ctx,next){
         const admin = await adminModel.findOne(ctx.request.body)
-        if(!admin) { 
-            ctx.throw(401,'用户密码不正确')
-        }
         const { _id, name } = admin
         const token = jwt.sign({ _id, name }, 'my_token')
         
@@ -24,9 +21,6 @@ class Admin{
     }
 
     async info(ctx,next){
-        if(!ctx.state.user) { 
-            ctx.throw(403,'用户被列入黑名单')
-        }
         const { _id } = ctx.state.user
         const info = await adminModel.findById({ _id })
         const { name, role, avatar } = info

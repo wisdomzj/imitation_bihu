@@ -54,23 +54,13 @@
       :limit.sync="pagination.limit"
       @pagination="getuserList"
     />
-    <el-dialog title="添加用户1111" :visible.sync="dialogaddUserVisible">
+    <el-dialog title="添加用户" :visible.sync="dialogaddUserVisible">
       <el-form :model="addUser">
         <el-form-item label="用户名" :label-width="formLabelWidth">
           <el-input v-model="addUser.name" placeholder="请输入用户名" maxlength="10" clearable />
         </el-form-item>
         <el-form-item label="用户密码" :label-width="formLabelWidth">
           <el-input v-model="addUser.password" placeholder="请输入密码" maxlength="6" show-password />
-        </el-form-item>
-        <el-form-item label="用户权限" :label-width="formLabelWidth">
-          <el-select v-model="addUser.role" placeholder="请选择">
-            <el-option
-              v-for="item in options"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            />
-          </el-select>
         </el-form-item>
         <el-form-item label="用户头像" :label-width="formLabelWidth">
           <el-upload

@@ -7,6 +7,8 @@ import link from '@/api/link'
 import upload from '@/api/upload'
 import setting from '@/api/setting'
 import admin from '@/api/admin'
+import store from '@/store'
+import { MessageBox, Message } from 'element-ui'
 import { getToken } from '@/utils/auth'
 
 const instance = axios.create({
@@ -83,6 +85,23 @@ instance.interceptors.request.use(config => {
 instance.interceptors.response.use(response => {
   return response.data
 }, error => {
+  if (error.response && error.response.status === 401) {
+    MessageBox.confirm('您已注销，可以取消停留在此页面上，或者再次登录', '确认登出', {
+      confirmButtonText: '重新登录',
+      cancelButtonText: '取消',
+      type: 'warning'
+    }).then(() => {
+      store.dispatch('user/resetToken').then(() => {
+        location.reload()
+      })
+    })
+  } else {
+    Message({
+      message: error.response.data.message || 'Error',
+      type: 'error',
+      duration: 5 * 1000
+    })
+  }
   return Promise.reject(error)
 })
 
